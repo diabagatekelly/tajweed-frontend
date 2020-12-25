@@ -1,0 +1,182 @@
+#header {
+  padding: 1em
+}
+
+#quran {
+  z-index: -5;
+    position: relative;
+    top: 0px;
+    -webkit-animation: slideIn 3s forwards;
+    -moz-animation: slideIn 3s forwards;
+    animation: slideIn 3s forwards;
+  }
+  @-webkit-keyframes slideIn {
+    0% {
+      transform: translateY(-900px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  @-moz-keyframes slideIn {
+    0% {
+      transform: translateY(-900px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideIn {
+    0% {
+      transform: translateY(-900px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .tajweed p {
+    font-size: 0.75rem;
+   }
+
+   .tajweed p.quote {
+    font-weight: bold;
+   }
+
+  .letters {
+    box-shadow: 1px 1px 2px;
+    height: 35px;
+    margin: 2em 1em 1em;
+    border-radius: 50%;
+  }
+
+  .alif {
+    transform-origin: bottom;
+    animation: pulse-alif 2s linear infinite;
+}
+
+@keyframes pulse-alif { 
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-30px); }
+  100% { transform: translateY(0); } 
+}
+
+.jeem {
+  transform-origin: center;
+  animation: pulse-jeem 2s linear infinite;
+  animation-delay: 1s;
+}
+
+@keyframes pulse-jeem { 
+0%   { transform: translateY(0); }
+50%  { transform: translateY(-30px); }
+100% { transform: translateY(0); } 
+}
+
+.yaa {
+  transform-origin: bottom;
+  animation: pulse-yaa 2s linear infinite;
+}
+
+@keyframes pulse-yaa { 
+0%   { transform: translateY(0); }
+50%  { transform: translateY(-30px); }
+100% { transform: translateY(0); } 
+}
+
+#about {
+  padding: 1em;
+    border-radius: 50%;
+    height: auto;
+    min-height: 50vh;
+    background-color: #c3f1d1;
+  
+}
+
+.tajweed {
+  width: 75%;
+  margin: 0 auto;
+}
+
+#services {
+  padding: 1em;
+  min-height: 50vh;
+}
+.card {
+  width: 15rem; 
+  height: 10em;
+  margin: 0 auto;
+}
+
+#learn {
+  background-color: rgb(238, 45, 180);
+}
+
+#practice {
+  background-color: rgb(61, 143, 23);
+}
+
+#test {
+  background-color:rgb(73, 163, 247);
+}
+
+.inner {
+  position: absolute;
+}
+.card-body {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-text {
+  opacity: 0;
+}
+
+.card-text:hover {
+  opacity: 1;
+  z-index: 5;
+  height: 100%;
+  background-color: #c3f1d1;
+  justify-self: center;
+  padding: 2em
+}
+
+.btn-success {
+  background-color:#c3f1d1;
+  color: black;
+}
+
+#footer {
+  padding: 1em;
+  border-top: 2px solid #c3f1d1;
+}
+
+#footer p {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+
+  @media only screen and (min-width: 768px) {
+   h3 {
+     font-size: calc(1.375rem + 1.5vw);
+   }
+
+   h4 {
+     font-size: calc(1.375rem + 1.5vw);
+   }
+
+   .tajweed p.quote {
+    font-size: 1.5rem;
+   }
+
+   .tajweed p {
+    font-size: 1rem;
+   }
+
+   .letters {
+    height: 50px;
+  }
+  } 
+  
