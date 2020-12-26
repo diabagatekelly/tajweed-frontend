@@ -1,0 +1,24 @@
+    <div class="row d-flex align-items-start">
+        <div class="col-12 justify-content-center text-center">
+            <container-element [ngSwitch]="activity">
+                <some-element *ngSwitchCase="'learn'">
+                    <h1>Happy Learning</h1>
+                    <p>Listen to proper pronunciation of specific rules from reciters and more.</p> 
+                    <app-activity-form [activity]="activity"></app-activity-form>
+                </some-element>
+                <some-element *ngSwitchCase="'practice'">
+                    <h1>Practice makes perfect!</h1>
+                    <p>Find all instances of the rule being practiced within a specified number of ayah.</p>
+                    <app-activity-form [activity]="activity"></app-activity-form>
+                </some-element>
+                <some-element *ngSwitchCase="'test'">
+                    <h1>You got this!</h1>
+                    <p>Test your mastery for each rule by finding it within a set of ayah.</p>
+                    <app-activity-form [activity]="activity"></app-activity-form>
+                </some-element>
+                <some-element *ngSwitchDefault>
+                    <p></p>
+                </some-element>
+            </container-element>
+        </div>
+    </div>

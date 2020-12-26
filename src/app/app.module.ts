@@ -6,6 +6,14 @@ import { AppComponent } from './app.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { AboutComponent } from './components/about/about.component';
+import { FooterComponent } from './shared/footer/footer.component';
+import { StudentHubComponent } from './components/student-hub/student-hub.component';
+import { ActivityComponent } from './components/student-hub/activity/activity.component';
+import { ActivityFormComponent } from './components/student-hub/activity/activity-form/activity-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -13,11 +21,19 @@ import { AboutComponent } from './components/about/about.component';
     HomepageComponent,
     RoutingComponents,
     NavbarComponent,
-    AboutComponent
+    AboutComponent,
+    FooterComponent,
+    StudentHubComponent,
+    ActivityComponent,
+    ActivityFormComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

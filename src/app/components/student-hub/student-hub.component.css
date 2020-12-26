@@ -1,0 +1,55 @@
+#student-hub {
+    padding: 2em;
+}
+
+
+.card {
+    width: 15rem; 
+    height: 10em;
+    margin: 0 auto;
+  }
+  
+  #learn {
+    background-color: rgb(238, 45, 180);
+  }
+  
+  #practice {
+    background-color: rgb(61, 143, 23);
+  }
+  
+  #test {
+    background-color:rgb(73, 163, 247);
+  }
+  
+  .inner {
+    position: absolute;
+  }
+  .card-body {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-text {
+    opacity: 0;
+  }
+  
+  .card-text:hover {
+    opacity: 1;
+    z-index: 5;
+    height: 100%;
+    background-color: #c3f1d1;
+    justify-self: center;
+    padding: 2em
+  }
+
+ @media only screen and (min-device-width: 768px) and (min-device-height: 768px) {
+  #student-hub {
+    height: 80vh;
+}
+
+.row.outer {
+  height: 100%
+}
+ }
+
