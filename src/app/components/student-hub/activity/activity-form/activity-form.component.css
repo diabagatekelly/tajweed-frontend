@@ -1,3 +1,50 @@
 .notFound {
+    color: inherit
+}
+
+.found {
+    color: rgb(29, 245, 29)
+}
+
+.missed {
     color: red
+}
+
+.legend.found {
+    width: 20%;
+    display: inline-block;
+    color: black;
+    background-color: rgb(29, 245, 29);
+}
+
+.legend.missed {
+    width: 20%;
+    display: inline-block;
+    color: black;
+    background-color: red;
+}
+
+.legend.wrong {
+    width: 20%;
+    display: inline-block;
+    color: black;
+    background-color: pink;
+}
+
+p {
+    font-size: 32px
+}
+
+
+.dot {
+position: absolute;
+border-radius: 50%;
+width: 20px;
+height: 20px;
+opacity: 0.5;
+background-color: pink;
+}
+
+.appAyat {
+    cursor: pointer;
 }
