@@ -4,14 +4,13 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class TajweedService {
-  url = 'http://127.0.0.1:5000/generate_ayat'
+export class AudioService {
+  
 
   constructor(private http: HttpClient) { }
 
-  getAyah(rule, range) {
-    return this.http.post(this.url, {ruleChosen: rule, range: range})
+  getAyahAudio(surah, ayah) {
+    let url = `http://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.husary`
+    return this.http.get(url)
   }
-
-
 }
