@@ -30,7 +30,7 @@
   </div>
 </div>
 <div class="row d-flex">
-  <div class="col-12">
+  <div class="col-12 mt-3">
     <div *ngIf="ruleCount > 0">
     <div class="legend found">Found</div>
     <div class="legend missed">Missed</div>
@@ -38,13 +38,14 @@
     </div>
   </div>
   <div class="col-12 mt-5">
+    <div class="mb-5" *ngIf="status === 're-submit'">
+      <p>Oops!! These ayat don't have this rule. Please try again.</p>
+    </div>
+
     <div class="appAyat" #appAyat (click)='handleClick($event)'>
 
     </div>
 
-    <div *ngIf="status === 're-submit'">
-      <p>Oops!! These ayat don't have this rule. Please try again.</p>
-    </div>
 
     <div *ngIf="activity === 'practice'">
       <div *ngIf="ruleCount > 0 && counter < ruleCount">
@@ -54,7 +55,7 @@
       </div>
   
       <div *ngIf="ruleCount !== 0 && counter ===ruleCount">
-        <p>Yay!! You won.</p>
+        <p>Good job" You found them all.</p>
         <p style="color: pink">Wrong Clicks: {{wrongCount}}</p>
 
       </div>

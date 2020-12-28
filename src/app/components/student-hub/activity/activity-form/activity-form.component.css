@@ -1,3 +1,8 @@
+audio {
+    width: 9em;
+    margin-bottom: 2.5em;
+}
+
 .notFound {
     color: inherit
 }

@@ -1,8 +1,7 @@
-import { OnInit, Input, Component, Renderer2, ElementRef, } from '@angular/core';
+import { OnInit, Input, Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TajweedService } from '../../../../services/tajweed.service';
-
-import { ViewChild } from '@angular/core';
+import {AudioService} from '../../../../services/audio.service';
 
 @Component({
   selector: 'app-activity-form',
@@ -14,7 +13,6 @@ import { ViewChild } from '@angular/core';
 export class ActivityFormComponent implements OnInit {
   @Input('activity') activity: string
   @ViewChild("appAyat") ayatDiv: ElementRef;
-  @ViewChild("dot") dot: ElementRef;
 
   rule = new FormControl('');
   range = new FormControl('');
@@ -28,7 +26,7 @@ export class ActivityFormComponent implements OnInit {
 
   testComplete = false;
 
-  constructor(private tajweed: TajweedService, private renderer2: Renderer2) { }
+  constructor(private tajweed: TajweedService, private audio: AudioService, private renderer2: Renderer2) { }
 
   ngOnInit(): void {
   }
@@ -59,6 +57,20 @@ export class ActivityFormComponent implements OnInit {
 
 
       for (let item of res['ayat']) {
+        let audioLink = '';
+        let audioNode = this.renderer2.createElement('audio');
+        this.renderer2.setAttribute(audioNode, 'controls', 'true')
+        this.renderer2.setAttribute(audioNode, 'controlsList', 'nodownload')
+
+        this.audio.getAyahAudio(item.surahNumber, item.ayahNumber).subscribe(res => {
+        audioLink = res["data"].audioSecondary[0]
+        let source = this.renderer2.createElement('source');
+
+        this.renderer2.setAttribute(source, 'src', audioLink);
+        this.renderer2.setAttribute(source, 'type', 'audio/mpeg');
+
+        this.renderer2.appendChild(audioNode, source);
+        })
 
         if (item.rule.length === 0) {
           const pNode = this.renderer2.createElement('p');
@@ -66,6 +78,7 @@ export class ActivityFormComponent implements OnInit {
 
           this.renderer2.appendChild(pNode, txtNode);
           this.renderer2.appendChild(this.ayatDiv.nativeElement, pNode);
+          this.renderer2.appendChild(this.ayatDiv.nativeElement, audioNode)
 
         } else if (item.rule.length !== 0) {
 
@@ -104,6 +117,8 @@ export class ActivityFormComponent implements OnInit {
 
 
               this.renderer2.appendChild(this.ayatDiv.nativeElement, pNode);
+              this.renderer2.appendChild(this.ayatDiv.nativeElement, audioNode)
+
 
             } else if (item.rule.length > 1) {
 
@@ -153,6 +168,8 @@ export class ActivityFormComponent implements OnInit {
               }
 
               this.renderer2.appendChild(this.ayatDiv.nativeElement, pNode)
+              this.renderer2.appendChild(this.ayatDiv.nativeElement, audioNode)
+
             }
 
           }
