@@ -1,18 +1,26 @@
-import { OnInit, Input, Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
+import { OnInit, OnDestroy, Input, Component, Renderer2, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TajweedService } from '../../../../services/tajweed.service';
 import {AudioService} from '../../../../services/audio.service';
+import { AudioRecordingService } from '../../../../services/audio-recording.service';
+import { DomSanitizer } from '@angular/platform-browser';
+
+
+declare var $: any;
+import * as RecordRTC from 'recordrtc';
 
 @Component({
   selector: 'app-activity-form',
   templateUrl: './activity-form.component.html',
-  styleUrls: ['./activity-form.component.css']
+  styleUrls: ['./activity-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 
 
 export class ActivityFormComponent implements OnInit {
   @Input('activity') activity: string
   @ViewChild("appAyat") ayatDiv: ElementRef;
+
 
   rule = new FormControl('');
   range = new FormControl('');
@@ -25,9 +33,37 @@ export class ActivityFormComponent implements OnInit {
   wrongCount = 0;
 
   testComplete = false;
+  isAudioRecording = false;
+  audioRecordedTime;
+  audioBlobUrl;
+  audioBlob;
+  audioName;
+  audioStream;
+  audioConf = { audio: true}
 
-  constructor(private tajweed: TajweedService, private audio: AudioService, private renderer2: Renderer2) { }
+  constructor(private tajweed: TajweedService, private audio: AudioService, private renderer2: Renderer2, private sanitizer: DomSanitizer, private audioRecordingService: AudioRecordingService, private ref: ChangeDetectorRef) { 
 
+
+    this.audioRecordingService.recordingFailed().subscribe(() => {
+      this.isAudioRecording = false;
+      this.ref.detectChanges();
+ });
+
+    this.audioRecordingService.getRecordedTime().subscribe((time) => {
+      this.audioRecordedTime = time;
+      this.ref.detectChanges();
+    });
+
+    this.audioRecordingService.getRecordedBlob().subscribe((data) => {
+      this.audioBlob = data.blob;
+      this.audioName = data.title;
+      this.audioBlobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(data.blob));
+      this.ref.detectChanges();
+    });
+  }
+
+
+  
   ngOnInit(): void {
   }
 
@@ -61,6 +97,7 @@ export class ActivityFormComponent implements OnInit {
         let audioNode = this.renderer2.createElement('audio');
         this.renderer2.setAttribute(audioNode, 'controls', 'true')
         this.renderer2.setAttribute(audioNode, 'controlsList', 'nodownload')
+        this.renderer2.setAttribute(audioNode, 'id', 'quran')
 
         this.audio.getAyahAudio(item.surahNumber, item.ayahNumber).subscribe(res => {
         audioLink = res["data"].audioSecondary[0]
@@ -215,5 +252,55 @@ export class ActivityFormComponent implements OnInit {
   calculateScore() {
     return ((this.counter / this.ruleCount)*100).toFixed(2);
   }
+
+
+
+    startAudioRecording() {
+      if (!this.isAudioRecording) {
+        this.isAudioRecording = true;
+        this.audioRecordingService.startRecording();
+      }
+    }
+  
+    abortAudioRecording() {
+      if (this.isAudioRecording) {
+        this.isAudioRecording = false;
+        this.audioRecordingService.abortRecording();
+      }
+    }
+  
+    stopAudioRecording() {
+      if (this.isAudioRecording) {
+        this.audioRecordingService.stopRecording();
+        this.isAudioRecording = false;
+      }
+    }
+  
+    clearAudioRecordedData() {
+      this.audioBlobUrl = null;
+    }
+  
+    downloadAudioRecordedData() {
+      this._downloadFile(this.audioBlob, 'audio/mp3', this.audioName);
+    }
+  
+    ngOnDestroy(): void {
+      this.abortAudioRecording();
+    }
+  
+    _downloadFile(data: any, type: string, filename: string): any {
+      const blob = new Blob([data], { type: type });
+      const url = window.URL.createObjectURL(blob);
+      //this.video.srcObject = stream;
+      //const url = data;
+      const anchor = document.createElement('a');
+      anchor.download = filename;
+      anchor.href = url;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    }
+  
+  
 
 }

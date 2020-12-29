@@ -13,6 +13,9 @@ import { ActivityFormComponent } from './components/student-hub/activity/activit
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AudioRecordingService } from './services/audio-recording.service';
+import { AudioService } from './services/audio.service';
+import { TajweedService } from './services/tajweed.service';
 
 
 @NgModule({
@@ -35,7 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [AudioRecordingService, AudioService, TajweedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

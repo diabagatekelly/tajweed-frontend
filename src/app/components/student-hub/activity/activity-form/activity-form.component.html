@@ -10,7 +10,7 @@
         <option value="idghaamNoGhunnah">Idghaam w/ No Ghunnah</option>
         <option value="ikhfa">Ikhfa</option>
         <option value="iqlab">Iqlab</option>
-        <option value="madd246">Regular Madd - 2, (optional 4, or optional 6)</option>
+        <option value="madd246">Madd - 2, 4 or 6</option>
         <option value="madd">Long Madd</option>
         <option value="qalqalah">Qalqalah</option>
         <option value="hamzatWasl">Hamzatul Wasl</option>
@@ -30,6 +30,24 @@
   </div>
 </div>
 <div class="row d-flex">
+  <div class="col-12 mt-3 mb-5">
+    <div *ngIf="ruleCount > 0">
+      <hr style="border: 2px solid gray"/>
+
+        <div class="mb-1">Bonus: Record Your Own Recitation</div>
+        <div>
+          <button class="btn btn-success mb-1" *ngIf="!isAudioRecording && !audioBlobUrl" (click)="startAudioRecording()">Start Audio Recording</button>
+          <button class="btn btn-danger mb-1" *ngIf="isAudioRecording && !audioBlobUrl" (click)="stopAudioRecording()">Stop Audio Recording</button>
+          <button class="btn btn-secondary mb-1" *ngIf="!isAudioRecording && audioBlobUrl" (click)="clearAudioRecordedData()">Clear Audio Recording</button>
+          <button class="btn btn-primary mb-1" *ngIf="!isAudioRecording && audioBlobUrl" (click)="downloadAudioRecordedData()">Download Audio Recording</button>
+          <div id="audioTimer" *ngIf="isAudioRecording && !audioBlobUrl"> {{ audioRecordedTime }} </div>
+          <audio id="quranRec" *ngIf="!isAudioRecording && audioBlobUrl"  controls>
+            <source [src]="audioBlobUrl" type="audio/mp3">
+          </audio>
+        </div>
+      </div>
+    </div>
+
   <div class="col-12 mt-3">
     <div *ngIf="ruleCount > 0">
     <div class="legend found">Found</div>
@@ -37,48 +55,33 @@
     <div class="legend wrong">Wrong</div>
     </div>
   </div>
-  <div class="col-12 mt-5">
+
+  <div class="col-12 mt-3">
     <div class="mb-5" *ngIf="status === 're-submit'">
-      <p>Oops!! These ayat don't have this rule. Please try again.</p>
+      <p class="reg-text">Oops!! These ayat don't have this rule. Please try again.</p>
     </div>
-
-    <div class="appAyat" #appAyat (click)='handleClick($event)'>
-
-    </div>
-
 
     <div *ngIf="activity === 'practice'">
       <div *ngIf="ruleCount > 0 && counter < ruleCount">
-        <p>Score: {{counter}}/{{ruleCount}}</p>
-        <p style="color: pink">Wrong Clicks: {{wrongCount}}</p>
-
+        <p class="reg-text">Score: {{counter}}/{{ruleCount}}</p>
+        <p class="reg-text" style="color: pink">Wrong Clicks: {{wrongCount}}</p>
       </div>
   
       <div *ngIf="ruleCount !== 0 && counter ===ruleCount">
-        <p>Good job" You found them all.</p>
-        <p style="color: pink">Wrong Clicks: {{wrongCount}}</p>
-
+        <p class="reg-text">Good job" You found them all.</p>
+        <p class="reg-text" style="color: pink">Wrong Clicks: {{wrongCount}}</p>
       </div>
-
     </div>
+
+    <div class="appAyat mt-3" #appAyat (click)='handleClick($event)'></div>
 
     <div *ngIf="activity === 'test'">
       <button *ngIf="ruleCount > 0 && !testComplete" (click)='showScore()' class="btn btn-primary">Calculate score</button>
-
       <div *ngIf="testComplete">
-        <p>Score: {{counter}}/{{ruleCount}}</p>
-
-        <p>% mastery: {{calculateScore()}}%</p>
-        <p>Wrong Clicks: {{wrongCount}}</p>
+        <p class="reg-text">Score: {{counter}}/{{ruleCount}}</p>
+        <p class="reg-text">% mastery: {{calculateScore()}}%</p>
+        <p class="reg-text">Wrong Clicks: {{wrongCount}}</p>
       </div>  
-    
     </div>
-
-
-
-   
-
-
-
   </div>
 </div>

@@ -1,6 +1,19 @@
-audio {
+label {
+    display: block;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+}
+
+audio#quran {
     width: 9em;
     margin-bottom: 2.5em;
+}
+
+audio#quranRec {
+    width: 12em;
 }
 
 .notFound {
@@ -38,6 +51,10 @@ audio {
 
 p {
     font-size: 32px
+}
+
+p.reg-text {
+    font-size: 18px;
 }
 
 
