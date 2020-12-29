@@ -26,7 +26,12 @@ export class ActivityFormComponent implements OnInit {
   range = new FormControl('');
 
   status = '';
-  ayatArr = []
+  ayatArr = [];
+  
+  explanationSummary;
+  explanationDetails;
+  explanationExample;
+  explanationAudio; 
 
   ruleCount = 0;
   counter = 0;
@@ -67,6 +72,18 @@ export class ActivityFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+getExplanation() {
+  console.log('calling expl')
+  this.tajweed.getExpl(this.rule.value).subscribe(res => {
+    console.log(res["explanationObj"]);
+
+    this.explanationSummary = res["explanationObj"]["summary"]
+    this.explanationDetails = res["explanationObj"]["details"]
+    this.explanationExample = res["explanationObj"]["example"]
+    this.explanationAudio = res["explanationObj"]["audioLink"]
+})
+}
+
   submitSelected() {
     const childElements = this.ayatDiv.nativeElement.childNodes;
     for (let child of childElements) {
@@ -78,8 +95,8 @@ export class ActivityFormComponent implements OnInit {
     this.testComplete = false;
     this.wrongCount = 0;
 
-    this.tajweed.getAyah(this.rule.value, this.range.value).subscribe(res => {
-      console.log(res["ayat"])
+    this.tajweed.getAyah(this.rule.value, this.range.value || 1, this.activity).subscribe(res => {
+      console.log(res["ayat"]);
 
       let resultsOverview = res['ayat'].filter(i => i.rule.length !== 0);
 
@@ -143,7 +160,12 @@ export class ActivityFormComponent implements OnInit {
               const spanNode = this.renderer2.createElement('span');
               const spanText = this.renderer2.createText(`${ruleSubstr}`);
               this.renderer2.appendChild(spanNode, spanText);
-              this.renderer2.addClass(spanNode, 'notFound');
+              
+              if (this.activity !== 'learn') {
+                this.renderer2.addClass(spanNode, 'notFound');
+              } else if (this.activity === 'learn') {
+                this.renderer2.addClass(spanNode, 'learning');
+              }
 
               const begText = this.renderer2.createText(`${before}`);
               const endText = this.renderer2.createText(`${after} (${item.surahNumber}:${item.ayahNumber})`)
@@ -165,7 +187,12 @@ export class ActivityFormComponent implements OnInit {
               const spanNode = this.renderer2.createElement('span');
               const spanText = this.renderer2.createText(`${ruleSubstr}`);
               this.renderer2.appendChild(spanNode, spanText);
-              this.renderer2.addClass(spanNode, 'notFound');
+
+              if (this.activity !== 'learn') {
+                this.renderer2.addClass(spanNode, 'notFound');
+              } else if (this.activity === 'learn') {
+                this.renderer2.addClass(spanNode, 'learning');
+              }
 
               if (i === 0) {
                 let before = item.test_ayat.slice(0, ruleMap[`start${i}`]);
@@ -224,7 +251,13 @@ export class ActivityFormComponent implements OnInit {
       e.target.classList.add('found');
       e.target.classList.remove('notFound')
       this.counter += 1;
-    } else if (e.target.className === '') {
+    } else if (e.target.classList.contains('learning')) {
+      e.target.classList.add('found');
+      e.target.classList.remove('learning')
+      this.counter += 1;
+    }
+    
+    else if (e.target.className === '') {
       console.log(e.target.pageX, typeof(e.target.pageX))
       let newDiv = this.renderer2.createElement('div');
       this.renderer2.addClass(newDiv, 'dot');

@@ -16,8 +16,17 @@ audio#quranRec {
     width: 12em;
 }
 
+.expl {
+    width: 75%;
+    margin: 0 auto;
+}
+
 .notFound {
     color: inherit
+}
+
+.learning {
+    color: red
 }
 
 .found {
