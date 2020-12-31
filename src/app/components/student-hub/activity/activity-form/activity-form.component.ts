@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Input, Component, Renderer2, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { OnInit, Input, Component, Renderer2, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TajweedService } from '../../../../services/tajweed.service';
 import {AudioService} from '../../../../services/audio.service';

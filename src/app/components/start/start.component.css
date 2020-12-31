@@ -1,0 +1,18 @@
+#start {
+    padding: 2em;
+}
+
+input {
+    display: block;
+    margin: 1em 0;
+}
+
+
+ul, form {
+    width: 30%;
+    margin: 0 auto;
+}
+
+#register {
+    padding: 1em;
+}

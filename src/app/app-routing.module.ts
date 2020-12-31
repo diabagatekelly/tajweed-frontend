@@ -4,13 +4,14 @@ import { AboutComponent } from './components/about/about.component';
 import { ActivityComponent } from './components/student-hub/activity/activity.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { StudentHubComponent } from './components/student-hub/student-hub.component';
+import { StartComponent } from './components/start/start.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomepageComponent },
   { path: 'about', component: AboutComponent },
   { path: 'student-hub', component: StudentHubComponent },
-  { path: 'student-activity', component: ActivityComponent }
+  { path: 'start', component: StartComponent }
 ];
 
 @NgModule({
@@ -27,5 +28,5 @@ export const RoutingComponents = [
   HomepageComponent,
   AboutComponent,
   StudentHubComponent,
-  ActivityComponent
+  StartComponent
 ];

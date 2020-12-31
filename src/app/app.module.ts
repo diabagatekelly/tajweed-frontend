@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AudioRecordingService } from './services/audio-recording.service';
 import { AudioService } from './services/audio.service';
 import { TajweedService } from './services/tajweed.service';
+import { StartComponent } from './components/start/start.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { TajweedService } from './services/tajweed.service';
     FooterComponent,
     StudentHubComponent,
     ActivityComponent,
-    ActivityFormComponent
+    ActivityFormComponent,
+    StartComponent
   ],
   imports: [
     BrowserModule,
