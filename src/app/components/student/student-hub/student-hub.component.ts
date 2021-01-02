@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
 
 @Component({
   selector: 'app-student-hub',
@@ -6,18 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./student-hub.component.css']
 })
 export class StudentHubComponent implements OnInit {
+  @Input('user') user: Object
+  
   activity = ''
   action = ''
 
-  constructor() { }
+  constructor() {
+   }
 
   ngOnInit(): void {
-    console.log(this.activity)
   }
 
   setActivity(choice) {
     this.activity = choice;
     this.action = 'working';
   }
+
+
 
 }

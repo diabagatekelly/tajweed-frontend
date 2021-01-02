@@ -2,16 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AboutComponent } from './components/about/about.component';
 import { AuthGuard } from './services/auth/auth.guard';
-import { ActivityComponent } from './components/student-hub/activity/activity.component';
+import { ActivityComponent } from './components/student/student-hub/activity/activity.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { StudentHubComponent } from './components/student-hub/student-hub.component';
+import { StudentComponent } from './components/student/student.component';
 import { StartComponent } from './components/start/start.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomepageComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'student-hub', component: StudentHubComponent, canActivate: [ AuthGuard ] },
+  { path: 'student-hub', component: StudentComponent, canActivate: [ AuthGuard ] },
   { path: 'start', component: StartComponent }
 ];
 
@@ -29,6 +29,6 @@ export class AppRoutingModule { }
 export const RoutingComponents = [
   HomepageComponent,
   AboutComponent,
-  StudentHubComponent,
+  StudentComponent,
   StartComponent
 ];

@@ -1,8 +1,8 @@
 import { OnInit, Input, Component, Renderer2, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TajweedService } from '../../../../services/tajweed.service';
-import {AudioService} from '../../../../services/audio.service';
-import { AudioRecordingService } from '../../../../services/audio-recording.service';
+import { TajweedService } from '../../../../../services/tajweed.service';
+import {AudioService} from '../../../../../services/audio.service';
+import { AudioRecordingService } from '../../../../../services/audio-recording.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -20,7 +20,6 @@ import * as RecordRTC from 'recordrtc';
 export class ActivityFormComponent implements OnInit {
   @Input('activity') activity: string
   @ViewChild("appAyat") ayatDiv: ElementRef;
-
 
   rule = new FormControl('');
   range = new FormControl('');
@@ -47,8 +46,6 @@ export class ActivityFormComponent implements OnInit {
   audioConf = { audio: true}
 
   constructor(private tajweed: TajweedService, private audio: AudioService, private renderer2: Renderer2, private sanitizer: DomSanitizer, private audioRecordingService: AudioRecordingService, private ref: ChangeDetectorRef) { 
-
-
     this.audioRecordingService.recordingFailed().subscribe(() => {
       this.isAudioRecording = false;
       this.ref.detectChanges();
@@ -333,7 +330,6 @@ getExplanation() {
       anchor.click();
       document.body.removeChild(anchor);
     }
-  
-  
+
 
 }

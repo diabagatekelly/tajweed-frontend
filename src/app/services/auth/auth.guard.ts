@@ -10,6 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate {
   @Output() getAuthStatus: EventEmitter<any> = new EventEmitter();
+  @Output() getUser: EventEmitter<any> = new EventEmitter();
 
   constructor(private authService: AuthService,
     private router: Router) { } 
@@ -18,9 +19,10 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       return this.authService.authStatus().pipe(map((response: boolean) => {
-        console.log(response)
         if (response["response"] === true) {
           this.getAuthStatus.emit(true);
+          let user = response["user"]
+          this.getUser.emit(user)
           return true;
         }
         this.getAuthStatus.emit(false);

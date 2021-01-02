@@ -9,19 +9,17 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  authStatus = false
+  authStatus;
 
   constructor(private authGuard: AuthGuard, private authService: AuthService, private router: Router) {
     this.authGuard.getAuthStatus.subscribe(status => this.updateAuthStatus(status));
-
    }
 
   ngOnInit(): void {
-    console.log(this.authStatus)
   }
 
   updateAuthStatus(status) {
-    this.authStatus = status
+    this.authStatus = status;
     console.log(this.authStatus)
   }
 
