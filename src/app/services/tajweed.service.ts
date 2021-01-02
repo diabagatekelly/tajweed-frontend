@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TajweedService {
-  ayahUrl = 'http://127.0.0.1:5000/generate_ayat';
-  explUrl = 'http://127.0.0.1:5000/get_explanation';
+  ayahUrl = 'http://127.0.0.1:4200/api/generate_ayat';
+  explUrl = 'http://127.0.0.1:4200/api/get_explanation';
 
   constructor(private http: HttpClient) { }
 

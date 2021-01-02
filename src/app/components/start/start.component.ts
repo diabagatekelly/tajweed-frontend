@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {AuthService} from '../../services/auth.service';
+import { Router } from '@angular/router';
+import {AuthService} from '../../services/auth/auth.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class StartComponent implements OnInit {
   username = new FormControl('', [Validators.required])
   password = new FormControl('', [Validators.required])
   
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -32,6 +33,10 @@ export class StartComponent implements OnInit {
 
     this.auth.auth(data, this.mode).subscribe(res => {
       console.log(res)
+      if (res["isAuthenticated"] && res["isAuthenticated"] === true) {
+        this.router.navigate(['/student-hub']);
+      }
+
     })
   }
 

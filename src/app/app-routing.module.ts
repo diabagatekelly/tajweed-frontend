@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AboutComponent } from './components/about/about.component';
+import { AuthGuard } from './services/auth/auth.guard';
 import { ActivityComponent } from './components/student-hub/activity/activity.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { StudentHubComponent } from './components/student-hub/student-hub.component';
@@ -10,7 +11,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomepageComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'student-hub', component: StudentHubComponent },
+  { path: 'student-hub', component: StudentHubComponent, canActivate: [ AuthGuard ] },
   { path: 'start', component: StartComponent }
 ];
 
@@ -19,7 +20,8 @@ const routes: Routes = [
     anchorScrolling: 'enabled',
     scrollPositionRestoration: 'enabled'
   })],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [ AuthGuard ]
 })
 
 export class AppRoutingModule { }
