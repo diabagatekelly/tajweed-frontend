@@ -7,14 +7,14 @@
                     <app-activity-form [activity]="activity"></app-activity-form>
                 </some-element>
                 <some-element *ngSwitchCase="'practice'">
-                    <h1>Practice makes perfect!</h1>
+                    <h1>Practice makes perfect! {{user.firstName}}</h1>
                     <p>Find all instances of the rule being practiced within a specified number of ayah.</p>
-                    <app-activity-form [activity]="activity"></app-activity-form>
+                    <app-activity-form [activity]="activity" [user]='user'></app-activity-form>
                 </some-element>
                 <some-element *ngSwitchCase="'test'">
                     <h1>You got this!</h1>
                     <p>Test your mastery for each rule by finding it within a set of ayah.</p>
-                    <app-activity-form [activity]="activity"></app-activity-form>
+                    <app-activity-form [activity]="activity" [user]='user'></app-activity-form>
                 </some-element>
                 <some-element *ngSwitchDefault>
                     <p></p>

@@ -1,0 +1,34 @@
+<div class="container-fluid">
+    <div class="row d-flex">
+        <div class="col-3">
+            <ul class="nav nav-tabs flex-column" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Dashboard</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="activity-tab" data-bs-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="scores-tab" data-bs-toggle="tab" href="#scores" role="tab" aria-controls="scores" aria-selected="false">Scores</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="progress-tab" data-bs-toggle="tab" href="#progress" role="tab" aria-controls="progress" aria-selected="false">Progress</a>
+                  </li>
+              </ul>
+        </div>
+        <div class="col-9 content">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row d-flex">
+                        <div class="col-12">
+                            <h2>Hello {{user.firstName}} {{user.lastName}}!</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">Activity</div>
+                <div class="tab-pane fade" id="scores" role="tabpanel" aria-labelledby="scores-tab">Scores</div>
+                <div class="tab-pane fade" id="progress" role="tabpanel" aria-labelledby="progress-tab">Progress</div>
+            </div>
+        </div>
+    </div>
+</div>

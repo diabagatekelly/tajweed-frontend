@@ -4,7 +4,7 @@
 
             <container-element [ngSwitch]="action">
                 <some-element *ngSwitchCase="'working'">
-                    <app-activity [activity]="activity"></app-activity>
+                    <app-activity [activity]="activity" [user]='user'></app-activity>
                 </some-element>
              
                 <some-element *ngSwitchDefault>

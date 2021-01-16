@@ -16,12 +16,7 @@
       </select>
  
       <label *ngIf="activity != 'learn'" class="me-sm-2 sr-only" for="inlineFormAyatSelect">Number of Ayat</label>
-      <select *ngIf="activity != 'learn'" class="custom-select me-sm-2 mb-4" id="inlineFormAyatSelect" [formControl]="range">
-        <option selected>Choose a number of random Ayat</option>
-        <option value="5">Five</option>
-        <option value="10">Ten</option>
-        <option value="20">Twenty</option>
-      </select>
+      <input *ngIf="activity != 'learn'" class="custom-select me-sm-2 mb-4" id="inlineFormAyatSelect" [formControl]="range" type="number" min="1" max="10" step="1">
 
       <button (click)="activity === 'learn' ?  getExplanation() : submitSelected()" type="submit" class="btn btn-primary btn-sm">Submit</button>
     </form>
@@ -82,8 +77,8 @@
         <p class="reg-text" style="color: pink">Wrong Clicks: {{wrongCount}}</p>
       </div>
   
-      <div *ngIf="ruleCount !== 0 && counter ===ruleCount">
-        <p class="reg-text">Good job" You found them all.</p>
+      <div *ngIf="ruleCount !== 0 && counter === ruleCount">
+        <p class="reg-text">Good job! You found them all.</p>
         <p class="reg-text" style="color: pink">Wrong Clicks: {{wrongCount}}</p>
       </div>
     </div>

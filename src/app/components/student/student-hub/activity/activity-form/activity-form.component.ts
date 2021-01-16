@@ -1,6 +1,7 @@
 import { OnInit, Input, Component, Renderer2, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TajweedService } from '../../../../../services/tajweed.service';
+import { StatsService } from '../../../../../services/stats.service';
 import {AudioService} from '../../../../../services/audio.service';
 import { AudioRecordingService } from '../../../../../services/audio-recording.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -18,8 +19,10 @@ import * as RecordRTC from 'recordrtc';
 
 
 export class ActivityFormComponent implements OnInit {
-  @Input('activity') activity: string
+  @Input('activity') activity: string;
+  @Input('user') user: Object;
   @ViewChild("appAyat") ayatDiv: ElementRef;
+  
 
   rule = new FormControl('');
   range = new FormControl('');
@@ -45,7 +48,7 @@ export class ActivityFormComponent implements OnInit {
   audioStream;
   audioConf = { audio: true}
 
-  constructor(private tajweed: TajweedService, private audio: AudioService, private renderer2: Renderer2, private sanitizer: DomSanitizer, private audioRecordingService: AudioRecordingService, private ref: ChangeDetectorRef) { 
+  constructor(private tajweed: TajweedService, private audio: AudioService, private renderer2: Renderer2, private sanitizer: DomSanitizer, private audioRecordingService: AudioRecordingService, private ref: ChangeDetectorRef, private stats: StatsService) { 
     this.audioRecordingService.recordingFailed().subscribe(() => {
       this.isAudioRecording = false;
       this.ref.detectChanges();
@@ -265,25 +268,57 @@ getExplanation() {
 
       this.wrongCount += 1;
     }
+
+    if (this.counter === this.ruleCount && this.activity === 'practice') {
+      this.updatePracticeStats();
+    }
   }
 
   showScore() {
     this.testComplete = true;
     let notFoundArr = this.ayatDiv.nativeElement.getElementsByTagName("span");
-    console.log(notFoundArr)
 
     for (let item of notFoundArr) {
       console.log(item.classList)
-      item.classList.remove('notFound');
-      item.classList.add('missed');
+      if(!item.classList.contains('found')) {
+        item.classList.remove('notFound');
+        item.classList.add('missed');
+      }
     }
+
+    this.updateTestStats()
   }
 
   calculateScore() {
     return ((this.counter / this.ruleCount)*100).toFixed(2);
   }
 
+updatePracticeStats() {
+  let user = this.user['username'];
+  let stats = {
+    rule : this.rule.value,
+    ayah_count : this.range.value
+  };
 
+  this.stats.update_practice(user, stats).subscribe(res => {
+    console.log(res)
+  })
+}
+
+updateTestStats() {
+  let user = this.user['username'];
+  let stats = {
+    rule : this.rule.value,
+    ayah_count : this.range.value,
+    correct: this.counter,
+    out_of: this.ruleCount,
+    score: `${this.counter}/${this.ruleCount}`
+  };
+
+  this.stats.update_test(user, stats).subscribe(res => {
+    console.log(res)
+  })
+}
 
     startAudioRecording() {
       if (!this.isAudioRecording) {

@@ -8,11 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActivityComponent implements OnInit {
   @Input('activity') activity: string
+  @Input('user') user: Object
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.activity)
+    console.log(this.user)
   }
 
 }

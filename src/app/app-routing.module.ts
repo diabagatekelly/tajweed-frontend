@@ -2,17 +2,18 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AboutComponent } from './components/about/about.component';
 import { AuthGuard } from './services/auth/auth.guard';
-import { ActivityComponent } from './components/student/student-hub/activity/activity.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { StudentComponent } from './components/student/student.component';
 import { StartComponent } from './components/start/start.component';
+import { AccountComponent } from './components/student/account/account.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomepageComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'start', component: StartComponent },
   { path: 'student-hub', component: StudentComponent, canActivate: [ AuthGuard ] },
-  { path: 'start', component: StartComponent }
+  { path: 'account', component: AccountComponent, canActivate: [ AuthGuard ] }
 ];
 
 @NgModule({
@@ -30,5 +31,6 @@ export const RoutingComponents = [
   HomepageComponent,
   AboutComponent,
   StudentComponent,
-  StartComponent
+  StartComponent,
+  AccountComponent
 ];

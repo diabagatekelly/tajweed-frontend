@@ -1,0 +1,16 @@
+.nav {
+    background-color: green;
+    height: 100vh;
+}
+
+.nav a {
+    color: black;
+}
+
+.content {
+    padding: 2em;
+}
+
+.col-3 {
+    padding: 0;
+}

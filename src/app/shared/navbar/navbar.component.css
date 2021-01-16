@@ -1,0 +1,8 @@
+nav {
+    box-shadow: 2px 2px 5px;
+    border-bottom: 1px solid green;
+}
+
+.nav-link {
+    cursor: pointer;
+}

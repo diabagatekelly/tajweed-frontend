@@ -18,6 +18,7 @@ import { AudioService } from './services/audio.service';
 import { TajweedService } from './services/tajweed.service';
 import { StartComponent } from './components/start/start.component';
 import { StudentComponent } from './components/student/student.component';
+import { AccountComponent } from './components/student/account/account.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { StudentComponent } from './components/student/student.component';
     ActivityComponent,
     ActivityFormComponent,
     StartComponent,
-    StudentComponent
+    StudentComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
