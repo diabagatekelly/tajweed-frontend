@@ -19,6 +19,7 @@ import { TajweedService } from './services/tajweed.service';
 import { StartComponent } from './components/start/start.component';
 import { StudentComponent } from './components/student/student.component';
 import { AccountComponent } from './components/student/account/account.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -44,7 +45,7 @@ import { AccountComponent } from './components/student/account/account.component
     HttpClientModule,
     FormsModule
   ],
-  providers: [AudioRecordingService, AudioService, TajweedService],
+  providers: [AudioRecordingService, AudioService, TajweedService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
