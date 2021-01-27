@@ -3,22 +3,30 @@
         <div class="col-2">
             <ul class="nav nav-tabs flex-column" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Dashboard</a>
+                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
+                        aria-controls="home" aria-selected="true">Dashboard</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="activity-tab" data-bs-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">View All Practice</a>
+                    <a class="nav-link" id="activity-tab" data-bs-toggle="tab" href="#activity" role="tab"
+                        aria-controls="activity" aria-selected="false">View All Practice</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="scores-tab" data-bs-toggle="tab" href="#scores" role="tab" aria-controls="scores" aria-selected="false">View Tests & Scores</a>
+                    <a class="nav-link" id="scores-tab" data-bs-toggle="tab" href="#scores" role="tab"
+                        aria-controls="scores" aria-selected="false">View Tests & Scores</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a (click)="generateGraph('ghunnah')" class="nav-link" id="progress-tab" data-bs-toggle="tab" href="#progress" role="tab" aria-controls="progress" aria-selected="false">View All Progress</a>
-                  </li>
-              </ul>
+                    <a (click)="generateGraph('ghunnah')" class="nav-link" id="progress-tab" data-bs-toggle="tab"
+                        href="#progress" role="tab" aria-controls="progress" aria-selected="false">View All Progress</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="user-tab" data-bs-toggle="tab" href="#user" role="tab" aria-controls="user"
+                        aria-selected="false">Account Details</a>
+                </li>
+            </ul>
         </div>
         <div class="col-10 content">
             <div class="row d-flex">
-                <div class="col-12 mb-5 text-center">
+                <div class="col-12 mb-3 text-center">
                     <h2>Hello {{user.firstName}} {{user.lastName}}!</h2>
                 </div>
             </div>
@@ -30,17 +38,31 @@
                             <div>
                                 <ul class="nav nav-tabs" id="ruleTab" role="tablist">
                                     <li *ngFor="let r of ruleList; let i = index" class="nav-item" role="presentation">
-                                        <a [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}-tab' data-bs-toggle="tab" href='#{{r.code}}' role="tab" aria-controls='{{r.code}}' aria-selected="i == 0 ? true : false">{{r.name}}</a>
-                                      </li>
-                                  </ul> 
+                                        <a [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}-tab'
+                                            data-bs-toggle="tab" href='#{{r.code}}' role="tab"
+                                            aria-controls='{{r.code}}'
+                                            aria-selected="i == 0 ? true : false">{{r.name}}</a>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="tab-content pt-4" id="ruleTabContent">
-                                <div *ngFor="let r of ruleList; let i = index" [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'" id='{{r.code}}' role="tabpanel" aria-labelledby="{{r.code}}-tab">
-                                    <div *ngIf="stats[i].practice.length !== 0 || stats[i].test.length !== 0; else unworked">
-                                        <p><b>Last Practice: </b><span *ngIf="stats[i].practice.length !== 0; else noPractice">{{stats[i].practice[0].practice_date | date: 'fullDate' : '+0000'}}</span><ng-template #noPractice>No practice yet</ng-template></p>
-                                        <p><b>Last Test: </b><span *ngIf="stats[i].test.length !== 0; else noTest">{{stats[i].test[0].test_date | date: 'fullDate' : '+0000'}}</span><ng-template #noTest>No test yet</ng-template></p>
+                                <div *ngFor="let r of ruleList; let i = index"
+                                    [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'" id='{{r.code}}'
+                                    role="tabpanel" aria-labelledby="{{r.code}}-tab">
+                                    <div
+                                        *ngIf="stats[i].practice.length !== 0 || stats[i].test.length !== 0; else unworked">
+                                        <p><b>Last Practice: </b><span
+                                                *ngIf="stats[i].practice.length !== 0; else noPractice">{{stats[i].practice[0].practice_date
+                                                | date: 'fullDate' : '+0000'}}</span>
+                                            <ng-template #noPractice>No practice yet</ng-template>
+                                        </p>
+                                        <p><b>Last Test: </b><span
+                                                *ngIf="stats[i].test.length !== 0; else noTest">{{stats[i].test[0].test_date
+                                                | date: 'fullDate' : '+0000'}}</span>
+                                            <ng-template #noTest>No test yet</ng-template>
+                                        </p>
                                     </div>
-                                    <ng-template #unworked> 
+                                    <ng-template #unworked>
                                         <p>No activity yet</p>
                                     </ng-template>
                                 </div>
@@ -55,37 +77,44 @@
                             <div>
                                 <ul class="nav nav-tabs" id="allActivityTab" role="tablist">
                                     <li *ngFor="let r of ruleList; let i = index" class="nav-item" role="presentation">
-                                        <a [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}All-tab' data-bs-toggle="tab" href='#{{r.code}}All' role="tab" aria-controls='{{r.code}}All' aria-selected="i == 0 ? true : false">{{r.name}}</a>
-                                      </li>
-                                  </ul> 
+                                        <a [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}All-tab'
+                                            data-bs-toggle="tab" href='#{{r.code}}All' role="tab"
+                                            aria-controls='{{r.code}}All'
+                                            aria-selected="i == 0 ? true : false">{{r.name}}</a>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="tab-content pt-4" id="allActivityTabContent">
-                                <div *ngFor="let r of ruleList; let i = index" [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'" id='{{r.code}}All' role="tabpanel" aria-labelledby="{{r.code}}All-tab">
-                                        <div *ngIf="stats[i].practice.length !== 0; else prac">
-                                            <div class="row d-flex">
-                                                <div class="col-12 text-center">
-                                                    <h6><b>Total Ayah Practiced: </b><span>{{stats[i].practice_ayah_count}}</span></h6>
-                                                </div>
-                                                <hr>
-                                                <div class="col-12 mt-3">
-                                                    <div *ngFor="let item of stats[i].sorted_practice | keyvalue">
-                                                        <div class="row d-flex">
-                                                            <div class="col-12 col-md-6">
-                                                                <p><b>Date: </b><span>{{item.key }}</span></p>
-                                                            </div>
-                                                            <div class="col-12 col-md-6">
-                                                                <p><b># of Ayah: </b><span>{{item.value.ayah_count}}</span></p>
-                                                            </div>
+                                <div *ngFor="let r of ruleList; let i = index"
+                                    [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'"
+                                    id='{{r.code}}All' role="tabpanel" aria-labelledby="{{r.code}}All-tab">
+                                    <div *ngIf="stats[i].practice.length !== 0; else prac">
+                                        <div class="row d-flex">
+                                            <div class="col-12 text-center">
+                                                <h6><b>Total Ayah Practiced:
+                                                    </b><span>{{stats[i].practice_ayah_count}}</span></h6>
+                                            </div>
+                                            <hr>
+                                            <div class="col-12 mt-3">
+                                                <div *ngFor="let item of stats[i].sorted_practice | keyvalue">
+                                                    <div class="row d-flex">
+                                                        <div class="col-12 col-md-6">
+                                                            <p><b>Date: </b><span>{{item.key }}</span></p>
                                                         </div>
-                                                        <hr>
+                                                        <div class="col-12 col-md-6">
+                                                            <p><b># of Ayah: </b><span>{{item.value.ayah_count}}</span>
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                   
-                                                </div>                                          
-                                            </div>                                         
+                                                    <hr>
+                                                </div>
+
+                                            </div>
                                         </div>
-                                        <ng-template #prac>
-                                            <p>No practice yet</p>
-                                        </ng-template>
+                                    </div>
+                                    <ng-template #prac>
+                                        <p>No practice yet</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -98,47 +127,53 @@
                             <div>
                                 <ul class="nav nav-tabs" id="allTestTab" role="tablist">
                                     <li *ngFor="let r of ruleList; let i = index" class="nav-item" role="presentation">
-                                        <a [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}Test-tab' data-bs-toggle="tab" href='#{{r.code}}Test' role="tab" aria-controls='{{r.code}}Test' aria-selected="i == 0 ? true : false">{{r.name}}</a>
-                                      </li>
-                                  </ul> 
+                                        <a [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}Test-tab'
+                                            data-bs-toggle="tab" href='#{{r.code}}Test' role="tab"
+                                            aria-controls='{{r.code}}Test'
+                                            aria-selected="i == 0 ? true : false">{{r.name}}</a>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="tab-content pt-4" id="allTestTabContent">
-                                <div *ngFor="let r of ruleList; let i = index" [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'" id='{{r.code}}Test' role="tabpanel" aria-labelledby="{{r.code}}Test-tab">
-                                        <div *ngIf="stats[i].test.length !== 0; else test">
-                                            <div class="row d-flex">
-                                                <div class="col-12 col-md-6 text-center">
-                                                    <h6><b>Total Ayah Tested: </b><span>{{stats[i].test_ayah_count}}</span></h6>
-                                                </div>
-                                                <div class="col-12 col-md-6 text-center">
-                                                    <h6><b>Cummulative Mastery: </b><span>{{((stats[i].total_correct/stats[i].total_out_of) * 100).toFixed(1)}}%</span></h6>
-                                                </div>
-                                                <hr>
+                                <div *ngFor="let r of ruleList; let i = index"
+                                    [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'"
+                                    id='{{r.code}}Test' role="tabpanel" aria-labelledby="{{r.code}}Test-tab">
+                                    <div *ngIf="stats[i].test.length !== 0; else test">
+                                        <div class="row d-flex">
+                                            <div class="col-12 col-md-6 text-center">
+                                                <h6><b>Total Ayah Tested: </b><span>{{stats[i].test_ayah_count}}</span>
+                                                </h6>
                                             </div>
-                                            <div *ngFor="let tActivity of stats[i].test">
-                                                <div class="row d-flex">
-                                                    <div class="col-12 col-md-3">
-                                                        <p><b>Date: </b><span>{{tActivity.test_date | date: 'fullDate' : '+0000'}}</span></p>
-                                                    </div>
-                                                    <div class="col-12 col-md-3">
-                                                        <p><b># of Ayah: </b><span>{{tActivity.test_ayah_count}}</span></p>
-                                                    </div>
-                                                    <div class="col-12 col-md-3">
-                                                        <p><b>Score: </b><span>{{tActivity.test_score_composite}}</span></p>
-                                                    </div>
-                                                    <div class="col-12 col-md-3">
-                                                        <p><b>% Mastery: </b><span>{{((tActivity.test_score_correct/tActivity.test_out_of_count)*100).toFixed(1)}}%</span></p>
-                                                    </div>
-                                                    
+                                            <div class="col-12 col-md-6 text-center">
+                                                <h6><b>Cummulative Mastery:
+                                                    </b><span>{{((stats[i].total_correct/stats[i].total_out_of) *
+                                                        100).toFixed(1)}}%</span></h6>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <div *ngFor="let tActivity of stats[i].test">
+                                            <div class="row d-flex">
+                                                <div class="col-12 col-md-3">
+                                                    <p><b>Date: </b><span>{{tActivity.test_date | date: 'fullDate' :
+                                                            '+0000'}}</span></p>
                                                 </div>
-                                                
-                                                
+                                                <div class="col-12 col-md-3">
+                                                    <p><b># of Ayah: </b><span>{{tActivity.test_ayah_count}}</span></p>
+                                                </div>
+                                                <div class="col-12 col-md-3">
+                                                    <p><b>Score: </b><span>{{tActivity.test_score_composite}}</span></p>
+                                                </div>
+                                                <div class="col-12 col-md-3">
+                                                    <p><b>% Mastery:
+                                                        </b><span>{{((tActivity.test_score_correct/tActivity.test_out_of_count)*100).toFixed(1)}}%</span>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <ng-template #test>
-                                            <p>No tests yet</p>
-                                        </ng-template>
-                                   
-                            
+                                    </div>
+                                    <ng-template #test>
+                                        <p>No tests yet</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -151,28 +186,78 @@
                             <div>
                                 <ul class="nav nav-tabs" id="allProgressTab" role="tablist">
                                     <li *ngFor="let r of ruleList; let i = index" class="nav-item" role="presentation">
-                                        <a (click)="generateGraph(r.code)" [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}Line-tab' data-bs-toggle="tab" href='#{{r.code}}Line' role="tab" aria-controls='{{r.code}}Line' aria-selected="i == 0 ? true : false">{{r.name}}</a>
-                                      </li>
-                                  </ul> 
+                                        <a (click)="generateGraph(r.code)"
+                                            [ngClass]="i == 0 ? 'nav-link active' : 'nav-link'" id='{{r.code}}Line-tab'
+                                            data-bs-toggle="tab" href='#{{r.code}}Line' role="tab"
+                                            aria-controls='{{r.code}}Line'
+                                            aria-selected="i == 0 ? true : false">{{r.name}}</a>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="tab-content pt-4" id="allProgressTabContent">
-                                <div *ngFor="let r of ruleList; let i = index" [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'" id='{{r.code}}Line' role="tabpanel" aria-labelledby="{{r.code}}Line-tab">
-                                        <div *ngIf="stats[i].test.length !== 0; else test">
-                                                <svg id='{{r.code}}' width="auto" height="75vh"></svg>
-                                
-                                            
-                                                                               
-                                        </div>
-                                        <ng-template #test>
-                                            <p>No tests yet</p>
-                                        </ng-template>
-                                   
-                            
+                                <div *ngFor="let r of ruleList; let i = index"
+                                    [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'"
+                                    id='{{r.code}}Line' role="tabpanel" aria-labelledby="{{r.code}}Line-tab">
+                                    <div *ngIf="stats[i].test.length !== 0; else test">
+                                        <svg id='{{r.code}}' width="auto" height="75vh"></svg>
+                                    </div>
+                                    <ng-template #test>
+                                        <p>No tests yet</p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                </div>
+                <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="user-tab">
+                    <div class="row d-flex">
+                        <div class="col-12 mt-3">
+                            <h4 class="mb-4">Account Details</h4>
+                            <div>
+                                <ul class="nav nav-tabs" id="userTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile"
+                                            role="tab" aria-controls="profile" aria-selected="true">User Profile</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="reset-tab" data-bs-toggle="tab" href="#reset" role="tab"
+                                            aria-controls="reset" aria-selected="false">Reset Stats</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content pt-4" id="userTabContent">
+                                <div class="tab-pane fade show active" id="profile" role="tabpanel"
+                                    aria-labelledby="profile-tab">
+                                    <div class="row d-flex">
+                                        <div class="col">
+                                            <h5>Edit User Profile</h5>
+                                            <form id="editUserForm" [formGroup]="editForm" (submit)="editProfile()">
+                                                <input formControlName="username" id="username" placeholder="username" disabled>
+                                                <input formControlName="firstName" id="firstName" placeholder="First Name">
+                                                <input formControlName="lastName" id="lastName" placeholder="Last Name">
+                                                <input formControlName="email" id="email" placeholder="Email">
+                                                <button type="submit" class="btn btn-primary btn-sm">Edit Profile</button>
+                                            </form>
+                                        </div>
+    
+                                        <div class="col">
+                                            <h5>Reset Password</h5>
+                                            <form id="resetPassword" [formGroup]="passwordForm" (submit)="resetPassword()">
+                                                <input formControlName="username" id="username" placeholder="username" disabled>
+                                                <input formControlName="current" id="current" placeholder="Current Password">
+                                                <input formControlName="new" id="new" placeholder="New Password">
+                                                <button type="submit" class="btn btn-primary btn-sm">Reset Password</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="reset" role="tabpanel" aria-labelledby="reset-tab">
+                                    <p>Reset</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

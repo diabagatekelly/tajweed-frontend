@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { D3Service } from '../../../services/d3.service';
 import { DatePipe } from '@angular/common';
 import { Renderer2 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -12,10 +13,12 @@ import { Renderer2 } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
   @ViewChild("svgDiv") svgDiv: ElementRef;
-
+  editForm: FormGroup;
+  passwordForm: FormGroup;
 
   user;
   stats = [];
+
   ruleList = [
     {code: "ghunnah",
     name: "Ghunnah"}, 
@@ -36,30 +39,27 @@ export class AccountComponent implements OnInit {
     {code: "qalqalah",
     name: "Qalqalah"}].sort((a, b) => (a.code > b.code) ? 1 : -1)
 
-
-    newD3;
-
-    //public title = 'Line Chart';
-    data: any[] = [
-      {date: new Date('2010-01-01'), value: 40},
-      {date: new Date('2010-01-04'), value: 93},
-      {date: new Date('2010-01-05'), value: 95},
-      {date: new Date('2010-01-06'), value: 130},
-      {date: new Date('2010-01-07'), value: 110},
-      {date: new Date('2010-01-08'), value: 120},
-      {date: new Date('2010-01-09'), value: 129},
-      {date: new Date('2010-01-10'), value: 107},
-      {date: new Date('2010-01-11'), value: 140},
-    ];
-
-   
-  
+    newD3;  
 
   constructor(private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2) {
 
     this.authService.authStatus().subscribe(u => {
       console.log(u)
       this.user = u["user"];
+
+      this.editForm.setValue({
+        username: u["user"].username,
+        firstName: u["user"].firstName,
+        lastName: u["user"].lastName,
+        email: u["user"].email
+      })
+
+      this.passwordForm.setValue({
+        username: u["user"].username,
+        current: '',
+        new: ''
+      })
+
       this.stats = u["tajweed"].sort((a, b) => (a.code > b.code) ? 1 : -1)
       this.stats.forEach(i => {
         let sorted = {};
@@ -77,26 +77,13 @@ export class AccountComponent implements OnInit {
             }
           })
         }
-        i['sorted_practice'] = sorted
-        
+        i['sorted_practice'] = sorted  
       })
       console.log(this.stats)
     })
    }
 
    generateGraph(rule) {
-    // const childElements = this.svgDiv.nativeElement.childNodes;
-    // for (let child of childElements) {
-    //   this.renderer2.removeChild(this.svgDiv.nativeElement, child);
-    // }
-
-    // let svg = this.renderer2.createElement('svg');
-    // this.renderer2.setAttribute(svg, 'width', '900');
-    // this.renderer2.setAttribute(svg, 'height', '500');
-
-    // this.renderer2.appendChild(this.svgDiv.nativeElement, svg)
-
-
      let ruleData = []
      let ruleObj = this.stats.filter(i => i.code === rule)
      if (ruleObj[0].test.length !== 0) {
@@ -106,21 +93,35 @@ export class AccountComponent implements OnInit {
       })
     }
 
-    // this.model = new Model(ruleData);
-    
-    // this.model.buildSvg();
-    // this.model.addXandYAxis();
-    // this.model.drawLineAndPath();
-
     this.d3.buildSvg(rule)
-   this.d3.addXandYAxis(ruleData);
-   this.d3.drawLineAndPath(ruleData);
+    this.d3.addXandYAxis(ruleData);
+    this.d3.drawLineAndPath(ruleData);
      
    }
 
-   public ngOnInit(): void {  
+  ngOnInit(): void {  
+    this.editForm = new FormGroup({
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required])
+    })
+
+    this.passwordForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      current: new FormControl('', [Validators.required]),
+      new: new FormControl('', [Validators.required])
+    })
+
+  }
+
+  editProfile() {
+
   }
   
+  resetPassword() {
+
+  }
   
 
 }
