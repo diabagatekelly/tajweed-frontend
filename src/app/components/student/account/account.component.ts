@@ -15,6 +15,7 @@ export class AccountComponent implements OnInit {
   @ViewChild("svgDiv") svgDiv: ElementRef;
   editForm: FormGroup;
   passwordForm: FormGroup;
+  resetForm: FormGroup;
 
   user;
   stats = [];
@@ -113,14 +114,41 @@ export class AccountComponent implements OnInit {
       new: new FormControl('', [Validators.required])
     })
 
+    this.resetForm = new FormGroup({
+      all_practice: new FormControl(''),
+      all_test: new FormControl('', [Validators.required]),
+      ghunnah_practice: new FormControl('', [Validators.required]),
+      ghunnah_test: new FormControl('', [Validators.required]),
+      idghaamGhunnah_practice: new FormControl('', [Validators.required]),
+      idghaamGhunnah_test: new FormControl('', [Validators.required]),
+      idghaamNoGhunnah_practice: new FormControl('', [Validators.required]),
+      idghaamNoGhunnah_test: new FormControl('', [Validators.required]),
+      ikhfa_practice: new FormControl('', [Validators.required]),
+      ikhfa_test: new FormControl('', [Validators.required]),
+      iqlab_practice: new FormControl('', [Validators.required]),
+      iqlab_test: new FormControl('', [Validators.required]),
+      madd246_practice: new FormControl('', [Validators.required]),
+      madd246_test: new FormControl('', [Validators.required]),
+      madd_practice: new FormControl('', [Validators.required]),
+      madd_test: new FormControl('', [Validators.required]),
+      qalqalah_practice: new FormControl('', [Validators.required]),
+      qalqalah_test: new FormControl('', [Validators.required]),
+    })
+
+    console.log(this.resetForm)
+
   }
 
   editProfile() {
-
+console.log(this.editForm.value)
   }
   
   resetPassword() {
+console.log(this.passwordForm.value)
+  }
 
+  resetStats() {
+console.log(this.resetForm.value);
   }
   
 
