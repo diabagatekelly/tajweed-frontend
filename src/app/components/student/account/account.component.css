@@ -50,3 +50,7 @@ td {
 table {
     margin: 0 auto;
 }
+
+#updateUserBtn, #resetPasswordBtn, #deleteAccBtn {
+    margin-right: 1em;
+}

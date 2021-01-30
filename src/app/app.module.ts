@@ -20,6 +20,8 @@ import { StartComponent } from './components/start/start.component';
 import { StudentComponent } from './components/student/student.component';
 import { AccountComponent } from './components/student/account/account.component';
 import { DatePipe } from '@angular/common';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 
 @NgModule({
@@ -43,7 +45,8 @@ import { DatePipe } from '@angular/common';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot()
   ],
   providers: [AudioRecordingService, AudioService, TajweedService, DatePipe],
   bootstrap: [AppComponent]

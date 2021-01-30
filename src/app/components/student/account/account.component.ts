@@ -1,9 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { D3Service } from '../../../services/d3.service';
 import { DatePipe } from '@angular/common';
 import { Renderer2 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,9 +15,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class AccountComponent implements OnInit {
   @ViewChild("svgDiv") svgDiv: ElementRef;
+  modalRef: BsModalRef;
+
   editForm: FormGroup;
   passwordForm: FormGroup;
   resetForm: FormGroup;
+  deleteForm: FormGroup;
+
+  userUpdated = false;
+  passwordUpdated = false;
+  error = false;
+  openPopup = false;
 
   user;
   stats = [];
@@ -42,7 +52,8 @@ export class AccountComponent implements OnInit {
 
     newD3;  
 
-  constructor(private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2) {
+  constructor(private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2, private modalService: BsModalService, private router: Router) {
+   
 
     this.authService.authStatus().subscribe(u => {
       console.log(u)
@@ -50,8 +61,8 @@ export class AccountComponent implements OnInit {
 
       this.editForm.setValue({
         username: u["user"].username,
-        firstName: u["user"].firstName,
-        lastName: u["user"].lastName,
+        first_name: u["user"].first_name,
+        last_name: u["user"].last_name,
         email: u["user"].email
       })
 
@@ -59,6 +70,11 @@ export class AccountComponent implements OnInit {
         username: u["user"].username,
         current: '',
         new: ''
+      })
+
+      this.deleteForm.setValue({
+        username: u["user"].username,
+        password: '',
       })
 
       this.stats = u["tajweed"].sort((a, b) => (a.code > b.code) ? 1 : -1)
@@ -102,8 +118,8 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {  
     this.editForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
+      first_name: new FormControl('', [Validators.required]),
+      last_name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       username: new FormControl('', [Validators.required])
     })
@@ -112,6 +128,11 @@ export class AccountComponent implements OnInit {
       username: new FormControl('', [Validators.required]),
       current: new FormControl('', [Validators.required]),
       new: new FormControl('', [Validators.required])
+    })
+
+    this.deleteForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
     })
 
     this.resetForm = new FormGroup({
@@ -140,15 +161,44 @@ export class AccountComponent implements OnInit {
   }
 
   editProfile() {
-console.log(this.editForm.value)
+    this.authService.update_user(this.editForm.value).subscribe((res => {
+      console.log(res)
+      if (res["user"]) {
+        this.userUpdated = true;
+      } else {
+        this.error = true;
+      }
+    }))
   }
   
   resetPassword() {
-console.log(this.passwordForm.value)
+    this.authService.reset_password(this.passwordForm.value).subscribe((res => {
+      console.log(res)
+      if (res["response"] == 'success') {
+        this.passwordUpdated = true;
+      } else {
+        this.error = true;
+      }
+    }))
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  deleteUser() {
+    this.authService.delete_user(this.deleteForm.value).subscribe(res => {
+      if (res['response'] === 'deleted') {
+       this.authService.logout().subscribe(res => {
+        this.router.navigate(['/student-hub']);
+       })
+      }
+     
+    })
   }
 
   resetStats() {
-console.log(this.resetForm.value);
+    console.log(this.resetForm.value);
   }
   
 

@@ -27,7 +27,7 @@
         <div class="col-10 content">
             <div class="row d-flex">
                 <div class="col-12 mb-3 text-center">
-                    <h2>Hello {{user.firstName}} {{user.lastName}}!</h2>
+                    <h2>Hello {{user.first_name}} {{user.last_name}}!</h2>
                 </div>
             </div>
             <div class="tab-content" id="myTabContent">
@@ -146,16 +146,14 @@
                                             </div>
                                             <div class="col-12 col-md-6 text-center">
                                                 <h6><b>Cummulative Mastery:
-                                                    </b><span>{{((stats[i].total_correct/stats[i].total_out_of) *
-                                                        100).toFixed(1)}}%</span></h6>
+                                                    </b><span>{{((stats[i].total_correct/stats[i].total_out_of) * 100).toFixed(1)}}%</span></h6>
                                             </div>
                                             <hr>
                                         </div>
                                         <div *ngFor="let tActivity of stats[i].test">
                                             <div class="row d-flex">
                                                 <div class="col-12 col-md-3">
-                                                    <p><b>Date: </b><span>{{tActivity.test_date | date: 'fullDate' :
-                                                            '+0000'}}</span></p>
+                                                    <p><b>Date: </b><span>{{tActivity.test_date | date: 'fullDate' : '+0000'}}</span></p>
                                                 </div>
                                                 <div class="col-12 col-md-3">
                                                     <p><b># of Ayah: </b><span>{{tActivity.test_ayah_count}}</span></p>
@@ -199,7 +197,15 @@
                                     [ngClass]="i == 0 ? 'tab-pane fade show active' : 'tab-pane fade'"
                                     id='{{r.code}}Line' role="tabpanel" aria-labelledby="{{r.code}}Line-tab">
                                     <div *ngIf="stats[i].test.length !== 0; else test">
-                                        <svg id='{{r.code}}' width="auto" height="75vh"></svg>
+                                        <div class="row d-flex">
+                                            <div class="col-9">
+                                                <svg id='{{r.code}}' width="auto" height="75vh"></svg>
+                                            </div>
+                                            <div class="col-3">
+                                                <div><b># of Ayah: </b><span>{{stats[i].test_ayah_count}}</span></div>
+                                                <div><b>Total % Mastery: </b><span>{{((stats[i].total_correct/stats[i].total_out_of)*100).toFixed(1)}}%</span></div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <ng-template #test>
                                         <p>No tests yet</p>
@@ -234,10 +240,12 @@
                                             <h5>Edit User Profile</h5>
                                             <form id="editUserForm" [formGroup]="editForm" (submit)="editProfile()">
                                                 <input formControlName="username" id="username" placeholder="username" disabled>
-                                                <input formControlName="firstName" id="firstName" placeholder="First Name">
-                                                <input formControlName="lastName" id="lastName" placeholder="Last Name">
+                                                <input formControlName="first_name" id="first_name" placeholder="First Name">
+                                                <input formControlName="last_name" id="last_name" placeholder="Last Name">
                                                 <input formControlName="email" id="email" placeholder="Email">
-                                                <button type="submit" class="btn btn-primary btn-sm">Edit Profile</button>
+                                                <button id="updateUserBtn" type="submit" class='btn btn-primary'>Update User</button>
+                                                <span class="text-success ml-3" *ngIf="userUpdated">User successfully updated!</span>
+                                                <span class="text-danger ml-3" *ngIf="error">Oops, something went wrong! Please try again.</span>
                                             </form>
                                         </div>
     
@@ -247,8 +255,39 @@
                                                 <input formControlName="username" id="username" placeholder="username" disabled>
                                                 <input formControlName="current" id="current" placeholder="Current Password">
                                                 <input formControlName="new" id="new" placeholder="New Password">
-                                                <button type="submit" class="btn btn-primary btn-sm">Reset Password</button>
+                                                <button type="submit" id="resetPasswordBtn" class="btn btn-primary">Reset Password</button> <span class="text-success ml-3" *ngIf="passwordUpdated">Password successfully reset!</span>
                                             </form>
+                                        </div>
+
+                                        <div class="col">
+                                            <h5>Delete Account</h5>
+                                            <button type="button" class="btn btn-danger btn-lg" (click)="openModal(template)">Delete Account Permanently</button>
+ 
+                                            <ng-template #template>
+                                              <div class="modal-header">
+                                                <h4 class="modal-title pull-left">Are you sure?</h4>
+                                                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <p> If you delete your account permanently, you will lose all your tests and practie stats permanently.</p>
+                                                  <form id="deleteUser" [formGroup]="deleteForm" (submit)="deleteUser(); modalRef.hide()">
+                                                    <input formControlName="username" id="username" placeholder="username" disabled>
+                                                    <input formControlName="password" id="password" placeholder="Current Password">
+                                                    <hr/>
+                                                    <button id="deleteAccBtn" type="button" class="btn btn-secondary close" aria-label="Close" (click)="modalRef.hide()">
+                                                        Cancel
+                                                      </button>
+                                                      <button type="submit" class="btn btn-danger">
+                                                        Delete
+                                                      </button>
+                                                    <!-- <button type="submit" id="resetPasswordBtn" class="btn btn-primary">Reset Password</button> <span class="text-success ml-3" *ngIf="passwordUpdated">Password successfully reset!</span> -->
+                                                </form>
+                                            
+                                              </div>
+                                            </ng-template>
+                                               
                                         </div>
                                     </div>
                                 </div>
