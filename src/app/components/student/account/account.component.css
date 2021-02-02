@@ -29,23 +29,30 @@ input {
     margin: 1em 0;
 }
 
-th {
+th.tcol {
     padding: 1em;
-    text-align: center;
+    text-align: left;
+    width: 15em;
 }
 
 td {
     padding: 1em;
     text-align: center;
+    
 }
 
 .tcol {
     text-align: left;
 }
 
-#resetForm {
-    text-align: center;
+th.tcol.top {
+    width: auto;
+    text-align: right;
 }
+
+#resetForm, #allForm {
+    text-align: center;
+} 
 
 table {
     margin: 0 auto;

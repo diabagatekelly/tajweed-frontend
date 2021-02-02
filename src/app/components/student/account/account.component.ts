@@ -21,6 +21,7 @@ export class AccountComponent implements OnInit {
   passwordForm: FormGroup;
   resetForm: FormGroup;
   deleteForm: FormGroup;
+  allForm: FormGroup;
 
   userUpdated = false;
   passwordUpdated = false;
@@ -135,25 +136,28 @@ export class AccountComponent implements OnInit {
       password: new FormControl('', [Validators.required])
     })
 
+    this.allForm = new FormGroup({
+      all_practice: new FormControl(false),
+      all_test: new FormControl(false)
+    })
+
     this.resetForm = new FormGroup({
-      all_practice: new FormControl(''),
-      all_test: new FormControl('', [Validators.required]),
-      ghunnah_practice: new FormControl('', [Validators.required]),
-      ghunnah_test: new FormControl('', [Validators.required]),
-      idghaamGhunnah_practice: new FormControl('', [Validators.required]),
-      idghaamGhunnah_test: new FormControl('', [Validators.required]),
-      idghaamNoGhunnah_practice: new FormControl('', [Validators.required]),
-      idghaamNoGhunnah_test: new FormControl('', [Validators.required]),
-      ikhfa_practice: new FormControl('', [Validators.required]),
-      ikhfa_test: new FormControl('', [Validators.required]),
-      iqlab_practice: new FormControl('', [Validators.required]),
-      iqlab_test: new FormControl('', [Validators.required]),
-      madd246_practice: new FormControl('', [Validators.required]),
-      madd246_test: new FormControl('', [Validators.required]),
-      madd_practice: new FormControl('', [Validators.required]),
-      madd_test: new FormControl('', [Validators.required]),
-      qalqalah_practice: new FormControl('', [Validators.required]),
-      qalqalah_test: new FormControl('', [Validators.required]),
+      ghunnah_practice: new FormControl(false),
+      ghunnah_test: new FormControl(false),
+      idghaamGhunnah_practice: new FormControl(false),
+      idghaamGhunnah_test: new FormControl(false),
+      idghaamNoGhunnah_practice: new FormControl(false),
+      idghaamNoGhunnah_test: new FormControl(false),
+      ikhfa_practice: new FormControl(false),
+      ikhfa_test: new FormControl(false),
+      iqlab_practice: new FormControl(false),
+      iqlab_test: new FormControl(false),
+      madd246_practice: new FormControl(false),
+      madd246_test: new FormControl(false),
+      madd_practice: new FormControl(false),
+      madd_test: new FormControl(false),
+      qalqalah_practice: new FormControl(false),
+      qalqalah_test: new FormControl(false)
     })
 
     console.log(this.resetForm)
@@ -198,8 +202,50 @@ export class AccountComponent implements OnInit {
   }
 
   resetStats() {
-    console.log(this.resetForm.value);
+    console.log(this.resetForm.value)
   }
+
+  togglePracticeCheck(e) {
+        this.resetForm.setValue({
+          ghunnah_practice: e.target.checked ? true : false,
+          idghaamGhunnah_practice: e.target.checked ? true : false,
+          idghaamNoGhunnah_practice: e.target.checked ? true : false,
+          ikhfa_practice: e.target.checked ? true : false,
+          iqlab_practice: e.target.checked ? true : false,
+          madd246_practice: e.target.checked ? true : false,
+          madd_practice: e.target.checked ? true : false,
+          qalqalah_practice: e.target.checked ? true : false,
+          ghunnah_test: this.resetForm.controls['ghunnah_test'].value,
+          idghaamGhunnah_test: this.resetForm.controls['idghaamGhunnah_test'].value,
+          idghaamNoGhunnah_test: this.resetForm.controls['idghaamNoGhunnah_test'].value,
+          ikhfa_test: this.resetForm.controls['ikhfa_test'].value,
+          iqlab_test: this.resetForm.controls['iqlab_test'].value,
+          madd246_test: this.resetForm.controls['madd246_test'].value,
+          madd_test: this.resetForm.controls['madd_test'].value,
+          qalqalah_test: this.resetForm.controls['qalqalah_test'].value
+        })      
+  }
+
+  toggleTestCheck(e) {
+    this.resetForm.setValue({
+      ghunnah_practice: this.resetForm.controls['ghunnah_practice'].value,
+      idghaamGhunnah_practice: this.resetForm.controls['idghaamGhunnah_practice'].value,
+      idghaamNoGhunnah_practice: this.resetForm.controls['idghaamNoGhunnah_practice'].value,
+      ikhfa_practice: this.resetForm.controls['ikhfa_practice'].value,
+      iqlab_practice: this.resetForm.controls['iqlab_practice'].value,
+      madd246_practice: this.resetForm.controls['madd246_practice'].value,
+      madd_practice: this.resetForm.controls['madd_practice'].value,
+      qalqalah_practice: this.resetForm.controls['qalqalah_practice'].value,
+      ghunnah_test: e.target.checked ? true : false,
+      idghaamGhunnah_test: e.target.checked ? true : false,
+      idghaamNoGhunnah_test: e.target.checked ? true : false,
+      ikhfa_test: e.target.checked ? true : false,
+      iqlab_test: e.target.checked ? true : false,
+      madd246_test: e.target.checked ? true : false,
+      madd_test: e.target.checked ? true : false,
+      qalqalah_test: e.target.checked ? true : false
+    })      
+}
   
 
 }
