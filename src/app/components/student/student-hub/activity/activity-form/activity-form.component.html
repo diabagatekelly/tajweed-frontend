@@ -3,16 +3,22 @@
     <form id="ruleChoiceForm">
       <label class="me-sm-2 sr-only" for="inlineFormRuleSelect">Rule</label>
       <select class="custom-select me-sm-2 mb-4" id="inlineFormRuleSelect" [formControl]="rule">
-        <option selected>Choose a tajweed rule</option>
         <option value="ghunnah">Ghunnah</option>
-        <option value="idghaamGhunnah">Idghaam w/ Ghunnah</option>
-        <option value="idghaamNoGhunnah">Idghaam w/ No Ghunnah</option>
-        <option value="ikhfa">Ikhfa</option>
+        <option value="idghaam_ghunnah">Idghaam w/ Ghunnah (Noon Saakin)</option>
+        <option value="idghaam_no_ghunnah">Idghaam w/ No Ghunnah (Noon Saakin)</option>
+        <option value="idghaam_mutajanisayn">Idghaam Mutajaanisayn</option>
+        <option value="idghaam_mutaqaribayn">Idghaam Mutaqaaribayn</option>
+        <option value="idghaam_shafawi">Idghaam Shafawi (Meem Saakin)</option>
+        <option value="ikhfa">Ikhfa (Noon Saakin)</option>
+        <option value="ikhfa_shafawi">Ikhfa Shafawi (Meem Saakin)</option>
+        <option value="idhaar">Idhaar (Noon Saakin)</option>
+        <option value="idhaar_shafawi">Idhaar Shafawi (Meem Saakin)</option>
         <option value="iqlab">Iqlab</option>
-        <option value="madd246">Madd - 2, 4 or 6</option>
-        <option value="madd">Long Madd</option>
+        <option value="madd_246">Madd al-Aarid/al-Leen: 2, 4, 6 harakat</option>
+        <option value="madd_6">Madd Laazim: 6 harakat</option>
+        <option value="madd_muttasil">Madd al-Muttasil: 4, 5 harakat</option>
+        <option value="madd_munfasil">Madd al-Munfasil: 4, 5 harakat</option>
         <option value="qalqalah">Qalqalah</option>
-        <option value="hamzatWasl">Hamzatul Wasl</option>
       </select>
  
       <label *ngIf="activity != 'learn'" class="me-sm-2 sr-only" for="inlineFormAyatSelect">Number of Ayat</label>

@@ -22,20 +22,25 @@ audio#quranRec {
 }
 
 .notFound {
-    color: inherit
+    color: inherit;
+    /* font-family: 'Times New Roman', Times, serif; */
 }
 
 .learning {
-    color: red
+    color: red;
+    /* font-family: 'Times New Roman', Times, serif; */
 }
 
 .found {
-    color: rgb(29, 245, 29)
+    color: rgb(29, 245, 29);
+    /* font-family: 'Times New Roman', Times, serif; */
 }
 
 .missed {
-    color: red
+    color: red;
+    /* font-family: 'Times New Roman', Times, serif; */
 }
+
 
 .legend.found {
     width: 20%;
@@ -59,7 +64,7 @@ audio#quranRec {
 }
 
 p {
-    font-size: 32px
+    font-size: 32px;
 }
 
 p.reg-text {

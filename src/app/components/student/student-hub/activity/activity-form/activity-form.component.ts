@@ -129,12 +129,25 @@ getExplanation() {
         if (item.rule.length === 0) {
           const pNode = this.renderer2.createElement('p');
           const txtNode = this.renderer2.createText(`(${item.surahNumber}:${item.ayahNumber}) ${item.test_ayat}`);
+          
 
           this.renderer2.appendChild(pNode, txtNode);
           this.renderer2.appendChild(this.ayatDiv.nativeElement, pNode);
           this.renderer2.appendChild(this.ayatDiv.nativeElement, audioNode)
 
         } else if (item.rule.length !== 0) {
+
+          let pauses = /[\u06d6\u06d7\u06d8\u06d9\u06da\u06db\u06dc\u06e9]/g;
+
+          let pauseMap = []
+
+          let match;
+
+          while ((match = pauses.exec(item.test_ayat)) != null) {
+            pauseMap.push(match.index)
+
+        }
+     
 
           const pNode = this.renderer2.createElement('p');
 
@@ -144,11 +157,17 @@ getExplanation() {
           let newAyat = '';
 
           for (let r of item.rule) {
-
+            
+            let relToPause = pauseMap.filter((i) => i < r.start);
+            let shift = 2*(relToPause.length);
+            r.start = r.start + shift;
+            r.end = r.end + shift;
             ruleMap[`start${item.rule.indexOf(r)}`] = r.start;
             ruleMap[`end${item.rule.indexOf(r)}`] = r.end;
 
           }
+
+         
 
 
           for (let i = 0; i < item.rule.length; i++) {
@@ -156,6 +175,18 @@ getExplanation() {
               let ruleSubstr = item.test_ayat.substring(item.rule[0].start, item.rule[0].end);
               let before = item.test_ayat.slice(0, item.rule[0].start);
               let after = item.test_ayat.slice(item.rule[0].end);
+
+        
+              if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
+
+                ruleSubstr = item.test_ayat.substring(item.rule[0].start-2, item.rule[0].end);
+                before = item.test_ayat.slice(0, item.rule[0].start-2);
+              }
+
+              if (ruleSubstr === 'ٰٓ') {
+                ruleSubstr = item.test_ayat.substring(item.rule[0].start-3, item.rule[0].end);
+                before = item.test_ayat.slice(0, item.rule[0].start-3);
+              }
 
               const spanNode = this.renderer2.createElement('span');
               const spanText = this.renderer2.createText(`${ruleSubstr}`);
@@ -181,12 +212,28 @@ getExplanation() {
 
             } else if (item.rule.length > 1) {
 
-
               let ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`], ruleMap[`end${i}`]);
+
+              if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
+                ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`]-2, ruleMap[`end${i}`]);
+              }
+
+              if (ruleSubstr === 'ٰٓ') {
+                ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`]-3,  ruleMap[`end${i}`]);
+              }
 
               const spanNode = this.renderer2.createElement('span');
               const spanText = this.renderer2.createText(`${ruleSubstr}`);
               this.renderer2.appendChild(spanNode, spanText);
+
+              if (ruleSubstr.includes('ٰٓ')) {
+                ruleSubstr = 'ٰٓ'
+              }
+
+              if (ruleSubstr === 'لَآ') {
+                ruleSubstr = 'آ'
+              }
+
 
               if (this.activity !== 'learn') {
                 this.renderer2.addClass(spanNode, 'notFound');
@@ -197,6 +244,16 @@ getExplanation() {
               if (i === 0) {
                 let before = item.test_ayat.slice(0, ruleMap[`start${i}`]);
 
+
+                if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
+
+                  before = item.test_ayat.slice(0, ruleMap[`start${i}`]-2);
+                }
+
+                if (ruleSubstr === 'ٰٓ') {
+                  before = item.test_ayat.slice(0, ruleMap[`start${i}`]-2);
+                }
+
                 let concat = newAyat.concat(before)
 
                 let begText = this.renderer2.createText(`${concat}`);
@@ -204,10 +261,29 @@ getExplanation() {
                 this.renderer2.appendChild(pNode, begText);
                 this.renderer2.appendChild(pNode, spanNode);
 
+                if (ruleSubstr.includes('ٰٓ')) {
+                  ruleSubstr = 'ٰٓ'
+                }
+
+                if (ruleSubstr === 'لَآ') {
+                  ruleSubstr = 'آ'
+                }
+
 
               } else if (i > 0 && i === item.rule.length - 1) {
                 let before = item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`])
                 let after = item.test_ayat.slice(ruleMap[`end${i}`]);
+                
+               
+                 
+                if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
+                  before = item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-2);
+                }
+
+                if (ruleSubstr === 'ٰٓ') {
+           
+                  before = item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-3);
+                }
 
                 let begText = this.renderer2.createText(`${before}`);
                 let endText = this.renderer2.createText(`${after} (${item.surahNumber}:${item.ayahNumber})`)
@@ -218,11 +294,28 @@ getExplanation() {
                 this.renderer2.appendChild(pNode, endText)
 
 
+                if (ruleSubstr.includes('ٰٓ')) {
+                  ruleSubstr = 'ٰٓ'
+                }
 
+                if (ruleSubstr === 'لَآ') {
+                  ruleSubstr = 'آ'
+                }
 
               } else if (i > 0 && i < item.rule.length - 1) {
 
                 let concat = newAyat.concat(item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]))
+
+                console.log(ruleSubstr)
+                console.log(item.test_ayat.substring(ruleMap[`start${i}`] -1, ruleMap[`end${i}`]-1))
+
+
+                if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-2) === 'لَّ')) {
+
+                  concat = newAyat.concat(item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-2))
+
+                }
+
 
                 let begText = this.renderer2.createText(`${concat}`);
 
@@ -246,7 +339,6 @@ getExplanation() {
   }
 
   handleClick(e) {
-    console.log(e)
     if (e.target.classList.contains('notFound')) {
       e.target.classList.add('found');
       e.target.classList.remove('notFound')
@@ -258,7 +350,6 @@ getExplanation() {
     }
     
     else if (e.target.className === '') {
-      console.log(e.target.pageX, typeof(e.target.pageX))
       let newDiv = this.renderer2.createElement('div');
       this.renderer2.addClass(newDiv, 'dot');
       this.renderer2.appendChild(this.ayatDiv.nativeElement, newDiv);
@@ -279,7 +370,6 @@ getExplanation() {
     let notFoundArr = this.ayatDiv.nativeElement.getElementsByTagName("span");
 
     for (let item of notFoundArr) {
-      console.log(item.classList)
       if(!item.classList.contains('found')) {
         item.classList.remove('notFound');
         item.classList.add('missed');
