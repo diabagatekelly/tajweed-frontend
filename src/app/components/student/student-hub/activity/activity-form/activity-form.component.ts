@@ -177,10 +177,18 @@ getExplanation() {
               let after = item.test_ayat.slice(item.rule[0].end);
 
         
-              if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
+              if (ruleSubstr === 'آ') {
 
-                ruleSubstr = item.test_ayat.substring(item.rule[0].start-2, item.rule[0].end);
-                before = item.test_ayat.slice(0, item.rule[0].start-2);
+                if (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') {
+                  ruleSubstr = item.test_ayat.substring(item.rule[0].start-2, item.rule[0].end);
+                  before = item.test_ayat.slice(0, item.rule[0].start-2);
+
+                } else if (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ') {
+                  ruleSubstr = item.test_ayat.substring(item.rule[0].start-3, item.rule[0].end);
+                  
+                  before = item.test_ayat.slice(0, item.rule[0].start-3);
+               
+                }
               }
 
               if (ruleSubstr === 'ٰٓ') {
@@ -214,8 +222,15 @@ getExplanation() {
 
               let ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`], ruleMap[`end${i}`]);
 
-              if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
-                ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`]-2, ruleMap[`end${i}`]);
+              if (ruleSubstr === 'آ') {
+                if (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') {
+                  ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`]-2, ruleMap[`end${i}`]);
+                } else if (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ') {
+                  console.log('found', item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3))
+                  ruleSubstr = item.test_ayat.substring(ruleMap[`start${i}`]-3, ruleMap[`end${i}`]);
+                  console.log('looking', ruleSubstr)
+
+             }
               }
 
               if (ruleSubstr === 'ٰٓ') {
@@ -230,7 +245,8 @@ getExplanation() {
                 ruleSubstr = 'ٰٓ'
               }
 
-              if (ruleSubstr === 'لَآ') {
+
+              if (ruleSubstr === 'لَآ' || ruleSubstr === "لَّآ") {
                 ruleSubstr = 'آ'
               }
 
@@ -245,9 +261,12 @@ getExplanation() {
                 let before = item.test_ayat.slice(0, ruleMap[`start${i}`]);
 
 
-                if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
-
-                  before = item.test_ayat.slice(0, ruleMap[`start${i}`]-2);
+                if (ruleSubstr === 'آ') {
+                  if (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') {
+                    before = item.test_ayat.slice(0, ruleMap[`start${i}`]-2);
+                  } else if (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ') {
+                    before = item.test_ayat.slice(0, ruleMap[`start${i}`]-3);
+                  }
                 }
 
                 if (ruleSubstr === 'ٰٓ') {
@@ -265,7 +284,7 @@ getExplanation() {
                   ruleSubstr = 'ٰٓ'
                 }
 
-                if (ruleSubstr === 'لَآ') {
+                if (ruleSubstr === 'لَآ' || ruleSubstr === "لَّآ") {
                   ruleSubstr = 'آ'
                 }
 
@@ -276,8 +295,13 @@ getExplanation() {
                 
                
                  
-                if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ')) {
-                  before = item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-2);
+                if (ruleSubstr === 'آ') {
+                  if (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') {
+                    before = item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-2);
+                  } else if (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-3) === 'لّ') {
+                    before = item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-3);
+                  }
+
                 }
 
                 if (ruleSubstr === 'ٰٓ') {
@@ -298,22 +322,24 @@ getExplanation() {
                   ruleSubstr = 'ٰٓ'
                 }
 
-                if (ruleSubstr === 'لَآ') {
+                if (ruleSubstr === 'لَآ' || ruleSubstr === "لَّآ") {
                   ruleSubstr = 'آ'
                 }
+
+        
 
               } else if (i > 0 && i < item.rule.length - 1) {
 
                 let concat = newAyat.concat(item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]))
 
-                console.log(ruleSubstr)
-                console.log(item.test_ayat.substring(ruleMap[`start${i}`] -1, ruleMap[`end${i}`]-1))
 
 
-                if (ruleSubstr === 'آ' && (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') || (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-2) === 'لَّ')) {
-
-                  concat = newAyat.concat(item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-2))
-
+                if (ruleSubstr === 'آ') {
+                  if (item.test_ayat.substring(ruleMap[`start${i}`] -2, ruleMap[`end${i}`]-2) === 'لَ') {
+                    concat = newAyat.concat(item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-2))
+                  } else if (item.test_ayat.substring(ruleMap[`start${i}`] -3, ruleMap[`end${i}`]-2) === 'لَّ') {
+                    concat = newAyat.concat(item.test_ayat.slice(ruleMap[`end${i - 1}`], ruleMap[`start${i}`]-3))
+                  }
                 }
 
 
