@@ -18,7 +18,20 @@
                         <input [formControl]="username" id="username" placeholder="username">
                         <input [formControl]="password" id="password" placeholder="password">
 
-                        <button (click)="handleRegisterForm()" type="submit" class="btn btn-primary btn-sm">Submit</button>
+                        <div class="form-check form-check-inline">
+                          <input [formControl]="account_type" class="form-check-input" type="radio" name="account_type" id="student" value="student">
+                          <label class="form-check-label" for="student">Student Account</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input [formControl]="account_type" class="form-check-input" type="radio" name="account_type" id="teacher" value="teacher">
+                          <label class="form-check-label" for="teacher">Teacher Account</label>
+                        </div>
+                       
+
+                        <div>
+                          <button (click)="handleRegisterForm()" type="submit" class="btn btn-primary btn-sm">Submit</button>
+                        </div>
+                       
                     </form>
                 </div>
 

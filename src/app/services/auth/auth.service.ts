@@ -13,7 +13,7 @@ export class AuthService {
   resetPasswordUrl = 'http://localhost:4200/api/reset_password';
   deleteUserUrl = 'http://localhost:4200/api/delete_user';
   logoutUrl = 'http://localhost:4200/api/logout';
-
+  
   constructor(private http: HttpClient) {}
 
   auth(data, mode) {
@@ -42,5 +42,7 @@ reset_password(data) {
 delete_user(data) {
   return this.http.post(this.deleteUserUrl, {data: data}) 
 }
+
+
 
 }

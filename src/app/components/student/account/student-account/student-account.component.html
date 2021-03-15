@@ -18,21 +18,18 @@
                     <a (click)="generateGraph('ghunnah')" class="nav-link" id="progress-tab" data-bs-toggle="tab"
                         href="#progress" role="tab" aria-controls="progress" aria-selected="false">View All Progress</a>
                 </li>
-                <li *ngIf="user.account_type === 'teacher' || user.account_type === 'admin'" class="nav-item" role="presentation">
-                    <a class="nav-link" id="students-tab" data-bs-toggle="tab"
-                        href="#students" role="tab" aria-controls="students" aria-selected="false">View My Students</a>
-                </li>
                 
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="user-tab" data-bs-toggle="tab" href="#user" role="tab" aria-controls="user"
-                        aria-selected="false">Account Details</a>
+                        aria-selected="false">Student Account Details</a>
                 </li>
             </ul>
         </div>
         <div class="col-10 content">
             <div class="row d-flex">
                 <div class="col-12 mb-3 text-center">
-                    <h2>Hello {{user.first_name}} {{user.last_name}}!</h2>
+
+                    <h2>Student: {{user.first_name}} {{user.last_name}}</h2>
                 </div>
             </div>
             <div class="tab-content" id="myTabContent">
@@ -221,116 +218,12 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="students-tab">
-                    <div class="row d-flex">
-                        <div class="col-12 mt-3">
-                            <h4 class="mb-4">My Students</h4>
-                            <form class="form-inline" id="addStudent" [formGroup]="studentForm" (submit)="addStudent()">
-                                <input class="student-input" formControlName="student_username" id="student_username" placeholder="Student Username">
-                                <input class="student-input" formControlName="student_firstName" id="student_firstName" placeholder="Student First Name">
-                                <input class="student-input" formControlName="student_lastName" id="student_lastName" placeholder="Student Last Name">
-                                
-                                <button id="updateUserBtn" type="submit" class='btn btn-primary btn-sm'>Add New Student</button>
-                                <span class="text-success ml-3" *ngIf="studentAdded">Successfully added new student!</span>
-                                <span class="text-danger ml-3" *ngIf="error">Oops, we could not find this user</span>
-                            </form>
-
-                            <hr/>
-                             
-                                <div class="student-list">
-                                    <div class="card mb-1" *ngFor="let s of student_list | keyvalue">
-                                        <div class="card-header" id="heading-{{s.value.username}}">
-                                         <h6 class="mb-0">
-                                            <a target="_blank" routerLink='/student-account/{{user.username}}/{{s.value.username}}'>{{s.value.first_name}} {{s.value.last_name}} | {{s.value.username}}</a>    
-                                            <span (click)="removeStudent(s.value.username)" style="float: right; color: red"><i data-toggle="tooltip" data-placement="top" title="Remove student" class="fa fa-trash"></i></span>
-                                        </h6>
-                                        </div>
-                                    </div>
-                
-                              </div>
-                          
-                    </div>
-                </div>
-                </div>
-
 
                 <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="user-tab">
                     <div class="row d-flex">
                         <div class="col-12 mt-3">
-                            <h4 class="mb-4">Account Details</h4>
-                            <div>
-                                <ul class="nav nav-tabs" id="userTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile"
-                                            role="tab" aria-controls="profile" aria-selected="true">User Profile</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link" id="reset-tab" data-bs-toggle="tab" href="#reset" role="tab"
-                                            aria-controls="reset" aria-selected="false">Reset Stats</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-content pt-4" id="userTabContent">
-                                <div class="tab-pane fade show active" id="profile" role="tabpanel"
-                                    aria-labelledby="profile-tab">
-                                    <div class="row d-flex">
-                                        <div class="col">
-                                            <h5>Edit User Profile</h5>
-                                            <form id="editUserForm" [formGroup]="editForm" (submit)="editProfile()">
-                                                <input formControlName="username" id="username" placeholder="username" disabled>
-                                                <input formControlName="first_name" id="first_name" placeholder="First Name">
-                                                <input formControlName="last_name" id="last_name" placeholder="Last Name">
-                                                <input formControlName="email" id="email" placeholder="Email">
-                                                <button id="updateUserBtn" type="submit" class='btn btn-primary'>Update User</button>
-                                                <span class="text-success ml-3" *ngIf="userUpdated">User successfully updated!</span>
-                                                <span class="text-danger ml-3" *ngIf="error">Oops, something went wrong! Please try again.</span>
-                                            </form>
-                                        </div>
-    
-                                        <div class="col">
-                                            <h5>Reset Password</h5>
-                                            <form id="resetPassword" [formGroup]="passwordForm" (submit)="resetPassword()">
-                                                <input formControlName="username" id="username" placeholder="username" disabled>
-                                                <input formControlName="current" id="current" placeholder="Current Password">
-                                                <input formControlName="new" id="new" placeholder="New Password">
-                                                <button type="submit" id="resetPasswordBtn" class="btn btn-primary">Reset Password</button> <span class="text-success ml-3" *ngIf="passwordUpdated">Password successfully reset!</span>
-                                            </form>
-                                        </div>
-
-                                        <div class="col">
-                                            <h5>Delete Account</h5>
-                                            <button type="button" class="btn btn-danger btn-lg" (click)="openModal(template)">Delete Account Permanently</button>
- 
-                                            <ng-template #template>
-                                              <div class="modal-header">
-                                                <h4 class="modal-title pull-left">Are you sure?</h4>
-                                                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                                                  <span aria-hidden="true">&times;</span>
-                                                </button>
-                                              </div>
-                                              <div class="modal-body">
-                                                  <p> If you delete your account permanently, you will lose all your tests and practie stats permanently.</p>
-                                                  <form id="deleteUser" [formGroup]="deleteForm" (submit)="deleteUser(); modalRef.hide()">
-                                                    <input formControlName="username" id="username" placeholder="username" disabled>
-                                                    <input formControlName="password" id="password" placeholder="Current Password">
-                                                    <hr/>
-                                                    <button id="deleteAccBtn" type="button" class="btn btn-secondary close" aria-label="Close" (click)="modalRef.hide()">
-                                                        Cancel
-                                                      </button>
-                                                      <button type="submit" class="btn btn-danger">
-                                                        Delete
-                                                      </button>
-                                                </form>
-                                            
-                                              </div>
-                                            </ng-template>
-                                               
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="reset" role="tabpanel" aria-labelledby="reset-tab">
-                                    <div class="row d-flex">
-                                        <div class="col-12">
+                            <h4 class="mb-4">Reset Student Stats</h4>
+                        
                                             <form>
                                                 <table>
                                                     <tr>
@@ -396,10 +289,6 @@
 
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                             </form>                          
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -6,14 +6,17 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { StudentComponent } from './components/student/student.component';
 import { StartComponent } from './components/start/start.component';
 import { AccountComponent } from './components/student/account/account.component';
+import { StudentAccountComponent } from './components/student/account/student-account/student-account.component';
+import { AlreadyActive } from './services/auth/already-active.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomepageComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'start', component: StartComponent },
+  { path: 'start', component: StartComponent, canActivate: [ AlreadyActive ] },
   { path: 'student-hub', component: StudentComponent, canActivate: [ AuthGuard ] },
-  { path: 'account', component: AccountComponent, canActivate: [ AuthGuard ] }
+  { path: 'account', component: AccountComponent, canActivate: [ AuthGuard ] },
+  { path: 'student-account/:teacher/:student', component: StudentAccountComponent, canActivate: [ AuthGuard ] }
 ];
 
 @NgModule({
@@ -32,5 +35,6 @@ export const RoutingComponents = [
   AboutComponent,
   StudentComponent,
   StartComponent,
-  AccountComponent
+  AccountComponent,
+  StudentAccountComponent
 ];

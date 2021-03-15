@@ -145,12 +145,9 @@ getExplanation() {
 
           while ((match = pauses.exec(item.test_ayat)) != null) {
             pauseMap.push(match.index)
-
         }
      
-
           const pNode = this.renderer2.createElement('p');
-
 
           let ruleMap = {}
 
@@ -342,24 +339,18 @@ getExplanation() {
                   }
                 }
 
-
                 let begText = this.renderer2.createText(`${concat}`);
 
                 this.renderer2.appendChild(pNode, begText);
                 this.renderer2.appendChild(pNode, spanNode);
-
               }
 
               this.renderer2.appendChild(this.ayatDiv.nativeElement, pNode)
               this.renderer2.appendChild(this.ayatDiv.nativeElement, audioNode)
-
             }
-
           }
-
         }
       }
-
     })
 
   }

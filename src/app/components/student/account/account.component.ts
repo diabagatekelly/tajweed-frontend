@@ -6,6 +6,9 @@ import { Renderer2 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
+import { StudentsService } from 'src/app/services/students.service';
+import { StatsService } from 'src/app/services/stats.service';
+
 
 
 @Component({
@@ -22,13 +25,16 @@ export class AccountComponent implements OnInit {
   resetForm: FormGroup;
   deleteForm: FormGroup;
   allForm: FormGroup;
+  studentForm: FormGroup;
 
   userUpdated = false;
   passwordUpdated = false;
+  studentAdded = false;
   error = false;
   openPopup = false;
 
   user;
+  student_list = [];
   stats = [];
 
   ruleList = [
@@ -53,18 +59,26 @@ export class AccountComponent implements OnInit {
 
     newD3;  
 
-  constructor(private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2, private modalService: BsModalService, private router: Router) {
+  constructor(private statService: StatsService, private studentService: StudentsService, private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2, private modalService: BsModalService, private router: Router) {
    
 
     this.authService.authStatus().subscribe(u => {
       console.log(u)
+
       this.user = u["user"];
+      this.student_list = u["user"]["students"]
 
       this.editForm.setValue({
         username: u["user"].username,
         first_name: u["user"].first_name,
         last_name: u["user"].last_name,
         email: u["user"].email
+      })
+
+      this.studentForm.setValue({
+        student_username: '',
+        student_firstName: '',
+        student_lastName: ''
       })
 
       this.passwordForm.setValue({
@@ -79,6 +93,9 @@ export class AccountComponent implements OnInit {
       })
 
       this.stats = u["tajweed"].sort((a, b) => (a.code > b.code) ? 1 : -1)
+
+      console.log('on load', this.stats)
+
       this.stats.forEach(i => {
         let sorted = {};
         if (i.practice.length !== 0) {
@@ -125,6 +142,12 @@ export class AccountComponent implements OnInit {
       username: new FormControl('', [Validators.required])
     })
 
+    this.studentForm = new FormGroup({
+      student_firstName: new FormControl('', [Validators.required]),
+      student_lastName: new FormControl('', [Validators.required]),
+      student_username: new FormControl('', [Validators.required])
+    })
+
     this.passwordForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       current: new FormControl('', [Validators.required]),
@@ -136,10 +159,10 @@ export class AccountComponent implements OnInit {
       password: new FormControl('', [Validators.required])
     })
 
-    this.allForm = new FormGroup({
-      all_practice: new FormControl(false),
-      all_test: new FormControl(false)
-    })
+    // this.allForm = new FormGroup({
+    //   all_practice: new FormControl(false),
+    //   all_test: new FormControl(false)
+    // })
 
     this.resetForm = new FormGroup({
       ghunnah_practice: new FormControl(false),
@@ -202,7 +225,84 @@ export class AccountComponent implements OnInit {
   }
 
   resetStats() {
-    console.log(this.resetForm.value)
+    let practice = [];
+    let test = [];
+    for (let i in this.resetForm.value) {
+      if (this.resetForm.value[i] === true) {
+        if (i.includes('practice')) {
+          practice.push(i)
+        }
+
+        if (i.includes('test')) {
+          test.push(i)
+        }
+      }
+    }
+
+    if (practice.length !== 0) {
+      this.statService.reset_practice(this.user.username, practice, 'self').subscribe(res => {
+        console.log(res)
+        this.stats = res["allTajArr"].sort((a, b) => (a.code > b.code) ? 1 : -1)
+      this.stats.forEach(i => {
+        let sorted = {};
+        if (i.practice.length !== 0) {
+          i.practice.forEach((session) => {
+            let newDate = this.datePipe.transform(session.practice_date, 'fullDate', '+0000')
+            if (sorted[newDate]) {
+              sorted[newDate]["count"]++;
+              sorted[newDate]["ayah_count"] += session.ayah_count
+
+            } else {
+              sorted[newDate] = {}
+              sorted[newDate]["count"] = 1
+              sorted[newDate]["ayah_count"] = session.ayah_count
+            }
+          })
+        }
+        i['sorted_practice'] = sorted  
+      })
+      })
+    }
+    console.log(test)
+    if (test.length !== 0) {
+      this.statService.reset_test(this.user.username, test, 'self').subscribe(res => {
+        console.log(res)
+        this.stats = res["allTajArr"].sort((a, b) => (a.code > b.code) ? 1 : -1)
+      this.stats.forEach(i => {
+        let sorted = {};
+        if (i.practice.length !== 0) {
+          i.practice.forEach((session) => {
+            let newDate = this.datePipe.transform(session.practice_date, 'fullDate', '+0000')
+            if (sorted[newDate]) {
+              sorted[newDate]["count"]++;
+              sorted[newDate]["ayah_count"] += session.ayah_count
+
+            } else {
+              sorted[newDate] = {}
+              sorted[newDate]["count"] = 1
+              sorted[newDate]["ayah_count"] = session.ayah_count
+            }
+          })
+        }
+        i['sorted_practice'] = sorted  
+      })
+      })
+    }
+  }
+
+  addStudent() {
+    this.studentService.add_student(this.user.username, this.studentForm.value).subscribe(res => {
+      this.user = res['user']
+      this.student_list = res['user']['students']
+    })    
+  }
+
+  removeStudent(student) {
+    console.log(student)
+    this.studentService.remove_student(student,this.user.username).subscribe(res => {
+      this.user = res['user']
+      this.student_list = res['user']['students']
+    })
   }
 
   togglePracticeCheck(e) {

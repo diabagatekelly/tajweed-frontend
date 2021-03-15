@@ -21,6 +21,8 @@ import { StudentComponent } from './components/student/student.component';
 import { AccountComponent } from './components/student/account/account.component';
 import { DatePipe } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { StudentsService } from './services/students.service';
+import { StudentAccountComponent } from './components/student/account/student-account/student-account.component';
 
 
 
@@ -37,7 +39,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ActivityFormComponent,
     StartComponent,
     StudentComponent,
-    AccountComponent
+    AccountComponent,
+    StudentAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     FormsModule,
     ModalModule.forRoot()
   ],
-  providers: [AudioRecordingService, AudioService, TajweedService, DatePipe],
+  providers: [AudioRecordingService, AudioService, TajweedService, DatePipe, StudentsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
