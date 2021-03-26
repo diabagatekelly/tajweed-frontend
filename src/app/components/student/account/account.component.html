@@ -22,6 +22,10 @@
                     <a class="nav-link" id="students-tab" data-bs-toggle="tab"
                         href="#students" role="tab" aria-controls="students" aria-selected="false">View My Students</a>
                 </li>
+                <li *ngIf="user.account_type === 'admin'" class="nav-item" role="presentation">
+                    <a class="nav-link" id="rules-tab" data-bs-toggle="tab"
+                        href="#rules" role="tab" aria-controls="rules" aria-selected="false">Add/Edit Rules</a>
+                </li>
                 
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="user-tab" data-bs-toggle="tab" href="#user" role="tab" aria-controls="user"
@@ -238,11 +242,82 @@
                             <hr/>
                              
                                 <div class="student-list">
+                                    <div *ngIf="student_list.length === 0">
+                                        <p>No students added yet</p>
+                                    </div>
                                     <div class="card mb-1" *ngFor="let s of student_list | keyvalue">
                                         <div class="card-header" id="heading-{{s.value.username}}">
                                          <h6 class="mb-0">
                                             <a target="_blank" routerLink='/student-account/{{user.username}}/{{s.value.username}}'>{{s.value.first_name}} {{s.value.last_name}} | {{s.value.username}}</a>    
                                             <span (click)="removeStudent(s.value.username)" style="float: right; color: red"><i data-toggle="tooltip" data-placement="top" title="Remove student" class="fa fa-trash"></i></span>
+                                        </h6>
+                                        </div>
+                                    </div>
+                
+                              </div>
+                          
+                    </div>
+                </div>
+                </div>
+
+                <div class="tab-pane fade" id="rules" role="tabpanel" aria-labelledby="rules-tab">
+                    <div class="row d-flex">
+                        <div class="col-12 mt-3">
+                            <button (click)="openModal(handleRule); ruleHandling('add');" class="btn btn-primary btn-lg">Add New Rule</button>
+
+                            <span class="text-success ml-3" *ngIf="ruleAddSuccess">Successfully added new rule!</span>
+                            <span class="text-success ml-3" *ngIf="ruleEditSuccess">Successfully edited rule!</span>
+
+                            <span class="text-danger ml-3" *ngIf="error">Oops, we could not add this rule.</span>
+                            <ng-template #handleRule>
+                                <div class="modal-header">                                   
+                                    <h4 class="modal-title pull-left">
+                                        <span *ngIf="this.editMode">Edit Tajweed Rules</span>
+                                        <span *ngIf="!this.editMode">Add New Tajweed Rules</span>
+                                    </h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form class="form-inline" id="addRule" [formGroup]="ruleForm" (submit)="processRule(); modalRef.hide()">
+                                        <input *ngIf="this.editMode" class="rule-input" formControlName="rule_code" id="rule_code" placeholder="Code (idghaam_ghunnah)" disabled>
+                                        <input *ngIf="!this.editMode" class="rule-input" formControlName="rule_code" id="rule_code" placeholder="Code (idghaam_ghunnah)">
+
+                                        <input class="rule-input" formControlName="rule_name" id="rule_name" placeholder="Name (Idghaam w/ Ghunnah)">
+                                        <textarea class="rule-input" formControlName="rule_summary" id="rule_summary" placeholder="Summary" rows="3"></textarea>
+                                        <textarea class="rule-input" formControlName="rule_details" id="rule_details" placeholder="Details" rows="10"></textarea>
+                                        <input class="rule-input" formControlName="rule_example" id="rule_example" placeholder="Example">
+                                        <input class="rule-input" formControlName="rule_audio" id="rule_audio" placeholder="Audio Link">
+                                        <label for="rule_with_exercise">With Exercise</label>
+                                        <input type="checkbox" class="rule-input checkbox" formControlName="rule_with_exercise" id="rule_with_exercise" placeholder="With Exercise">
+                                        <hr />
+
+                                        <button *ngIf="this.editMode" id="updateRuleBtn" type="submit" class='btn btn-primary'>Edit Rule</button>
+                                        <button *ngIf="!this.editMode" id="updateRuleBtn" type="submit" class='btn btn-primary'>Add Rule</button>
+
+                                        <button id="cancel" type="button" class="btn btn-secondary close" aria-label="Close" (click)="modalRef.hide()">
+                                            Cancel
+                                          </button>
+                                        
+                                       
+                                    </form>                              
+                                  </div>
+                            </ng-template>
+       
+
+                            <hr/>
+                             
+                                <div class="rule-list">
+                                    <div *ngIf="ruleList.length === 0">
+                                        <p>No rules fetched yet</p>
+                                    </div>
+                                    <div class="card mb-1" *ngFor="let r of ruleList">
+                                        <div class="card-header" id="heading-{{r.code}}">
+                                         <h6 class="mb-0">
+                                            {{r.name}}
+                                            <span (click)="deleteRule(r.code)" style="float: right; color: red"><i data-toggle="tooltip" data-placement="top" title="Delete Rule" class="fa fa-trash"></i></span>
+                                            <span (click)="openModal(handleRule); ruleHandling(r.code)" style="float: right; color: green"><i data-toggle="tooltip" data-placement="top" title="Edit Rule" class="fa fa-edit"></i></span>   
                                         </h6>
                                         </div>
                                     </div>
@@ -352,12 +427,12 @@
 
                                             <form id="resetForm" [formGroup]="resetForm" (submit)="resetStats()">
                                             <table>            
-                                                <tr>
-                                                    <th class="tcol">Ghunnah</th>
-                                                    <td><input type="checkbox" id="ghunnahP" name="ghunnahP" value="ghunnah-practice" formControlName="ghunnah_practice"></td>
-                                                    <td><input type="checkbox" id="ghunnahT" name="ghunnahT" value="ghunnah-test" formControlName="ghunnah_test"></td>     
+                                                <tr *ngFor="let r of ruleList">
+                                                    <th class="tcol">{{r.name}}</th>
+                                                    <td><input type="checkbox" id="{{r.code}}P" name="{{r.code}}P" value="{{r.code}}-practice" formControlName="{{r.code}}-practice"></td>
+                                                    <td><input type="checkbox" id="{{r.code}}T" name="{{r.code}}T" value="{{r.code}}-test" formControlName="{{r.code}}-test"></td>     
                                                 </tr>
-                                                <tr>
+                                                <!-- <tr>
                                                     <th class="tcol">Idghaam w/ Ghunnah</th>
                                                     <td><input type="checkbox" id="idghaamGhunnahP" name="idghaamGhunnahP" value="idghaamGhunnah-practice" formControlName="idghaamGhunnah_practice"></td>
                                                     <td><input type="checkbox" id="idghaamGhunnahT" name="idghaamGhunnahT" value="idghaamGhunnah-test" formControlName="idghaamGhunnah_test"></td>     
@@ -391,7 +466,7 @@
                                                     <th class="tcol">Qalqalah</th>
                                                     <td><input type="checkbox" id="qalqalahP" name="qalqalahP" value="qalqalah-practice" formControlName="qalqalah_practice"></td>
                                                     <td><input type="checkbox" id="qalqalahT" name="qalqalahT" value="qalqalah-test" formControlName="qalqalah_test"></td>     
-                                                </tr>                                                
+                                                </tr>                                                 -->
                                             </table>
 
                                             <button type="submit" class="btn btn-primary">Submit</button>

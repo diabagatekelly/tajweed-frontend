@@ -23,6 +23,7 @@ import { DatePipe } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { StudentsService } from './services/students.service';
 import { StudentAccountComponent } from './components/student/account/student-account/student-account.component';
+import { RuleService } from './services/rules.service';
 
 
 
@@ -51,7 +52,7 @@ import { StudentAccountComponent } from './components/student/account/student-ac
     FormsModule,
     ModalModule.forRoot()
   ],
-  providers: [AudioRecordingService, AudioService, TajweedService, DatePipe, StudentsService],
+  providers: [AudioRecordingService, AudioService, TajweedService, DatePipe, StudentsService, RuleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

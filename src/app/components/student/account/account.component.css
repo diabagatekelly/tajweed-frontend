@@ -34,6 +34,16 @@ input.student-input {
     margin: 1em;
 }
 
+.rule-input {
+    width: 100%;
+}
+
+.rule-input.checkbox {
+    width: auto;
+    display: inline-block;
+    margin: 1em;
+}
+
 th.tcol {
     padding: 1em;
     text-align: left;
@@ -63,6 +73,15 @@ table {
     margin: 0 auto;
 }
 
-#updateUserBtn, #resetPasswordBtn, #deleteAccBtn {
+#updateUserBtn, #resetPasswordBtn, #deleteAccBtn, #updateRuleBtn {
     margin-right: 1em;
+}
+
+
+.fa {
+    margin-right: 1em;
+}
+
+.modal-content {
+    padding: 2em;
 }

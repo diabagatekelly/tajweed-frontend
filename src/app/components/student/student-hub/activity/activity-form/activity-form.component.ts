@@ -5,6 +5,8 @@ import { StatsService } from '../../../../../services/stats.service';
 import {AudioService} from '../../../../../services/audio.service';
 import { AudioRecordingService } from '../../../../../services/audio-recording.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import {RULELIST} from '../../../../../shared/ruleList';
+
 
 
 declare var $: any;
@@ -23,6 +25,7 @@ export class ActivityFormComponent implements OnInit {
   @Input('user') user: Object;
   @ViewChild("appAyat") ayatDiv: ElementRef;
   
+  ruleList = []
 
   rule = new FormControl('');
   range = new FormControl('');
@@ -70,6 +73,8 @@ export class ActivityFormComponent implements OnInit {
 
   
   ngOnInit(): void {
+    this.ruleList = RULELIST.sort((a, b) => (a.code > b.code) ? 1 : -1)
+
   }
 
 getExplanation() {

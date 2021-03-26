@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RuleService } from 'src/app/services/rules.service';
+import { TajweedService } from 'src/app/services/tajweed.service';
 import {AuthService} from '../../services/auth/auth.service';
+
 
 
 @Component({
@@ -19,7 +22,7 @@ export class StartComponent implements OnInit {
   password = new FormControl('', [Validators.required])
   account_type = new FormControl('', [Validators.required])
   
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private tajweed: TajweedService, private rule: RuleService) {}
 
   ngOnInit(): void {}
 
@@ -36,6 +39,14 @@ export class StartComponent implements OnInit {
     this.auth.auth(data, this.mode).subscribe(res => {
       console.log(res)
       if (res["isAuthenticated"] && res["isAuthenticated"] === true) {
+        this.tajweed.fetchRules().subscribe(res => {
+          console.log('from login fetch rules', res)
+          let l = res['rules'].length
+          res['rules'].forEach((r) => {
+            this.rule.addRule(r, l)
+          })
+          
+        })
         this.router.navigate(['/student-hub']);
       }
 

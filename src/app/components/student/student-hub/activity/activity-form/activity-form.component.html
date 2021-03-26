@@ -3,8 +3,8 @@
     <form id="ruleChoiceForm">
       <label class="me-sm-2 sr-only" for="inlineFormRuleSelect">Rule</label>
       <select class="custom-select me-sm-2 mb-4" id="inlineFormRuleSelect" [formControl]="rule">
-        <option value="ghunnah">Ghunnah</option>
-        <option value="idghaam_ghunnah">Idghaam w/ Ghunnah (Noon Saakin)</option>
+        <option *ngFor="let r of ruleList" value="{{r.code}}">{{r.name}}</option>
+        <!-- <option value="idghaam_ghunnah">Idghaam w/ Ghunnah (Noon Saakin)</option>
         <option value="idghaam_no_ghunnah">Idghaam w/ No Ghunnah (Noon Saakin)</option>
         <option value="idghaam_mutajanisayn">Idghaam Mutajaanisayn</option>
         <option value="idghaam_mutaqaribayn">Idghaam Mutaqaaribayn</option>
@@ -18,7 +18,7 @@
         <option value="madd_6">Madd Laazim: 6 harakat</option>
         <option value="madd_muttasil">Madd al-Muttasil: 4, 5 harakat</option>
         <option value="madd_munfasil">Madd al-Munfasil: 4, 5 harakat</option>
-        <option value="qalqalah">Qalqalah</option>
+        <option value="qalqalah">Qalqalah</option> -->
       </select>
  
       <label *ngIf="activity != 'learn'" class="me-sm-2 sr-only" for="inlineFormAyatSelect">Number of Ayat</label>

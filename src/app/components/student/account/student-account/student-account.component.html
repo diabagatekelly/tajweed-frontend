@@ -244,51 +244,51 @@
 
 
                                             <form id="resetForm" [formGroup]="resetForm" (submit)="resetStats()">
-                                            <table>            
-                                                <tr>
-                                                    <th class="tcol">Ghunnah</th>
-                                                    <td><input type="checkbox" id="ghunnahP" name="ghunnahP" value="ghunnah-practice" formControlName="ghunnah_practice"></td>
-                                                    <td><input type="checkbox" id="ghunnahT" name="ghunnahT" value="ghunnah-test" formControlName="ghunnah_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Idghaam w/ Ghunnah</th>
-                                                    <td><input type="checkbox" id="idghaamGhunnahP" name="idghaamGhunnahP" value="idghaamGhunnah-practice" formControlName="idghaamGhunnah_practice"></td>
-                                                    <td><input type="checkbox" id="idghaamGhunnahT" name="idghaamGhunnahT" value="idghaamGhunnah-test" formControlName="idghaamGhunnah_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Idghaam w/ No Ghunnah</th>
-                                                    <td><input type="checkbox" id="idghaamNoGhunnahP" name="idghaamNoGhunnahP" value="idghaamNoGhunnah-practice" formControlName="idghaamNoGhunnah_practice"></td>
-                                                    <td><input type="checkbox" id="idghaamNoGhunnahT" name="idghaamNoGhunnahT" value="idghaamNoGhunnah-test" formControlName="idghaamNoGhunnah_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Ikhfa</th>
-                                                    <td><input type="checkbox" id="ikhfaP" name="ikhfaP" value="ikhfa-practice" formControlName="ikhfa_practice"></td>
-                                                    <td><input type="checkbox" id="ikhfaT" name="ikhfaT" value="ikhfa-test" formControlName="ikhfa_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Iqlab</th>
-                                                    <td><input type="checkbox" id="iqlabP" name="iqlabP" value="iqlab-practice" formControlName="iqlab_practice"></td>
-                                                    <td><input type="checkbox" id="iqlabT" name="iqlabT" value="iqlab-test" formControlName="iqlab_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Madd - 2, 4 or 6</th>
-                                                    <td><input type="checkbox" id="madd246P" name="madd246P" value="madd246-practice" formControlName="madd246_practice"></td>
-                                                    <td><input type="checkbox" id="madd246T" name="madd246T" value="madd246-test" formControlName="madd246_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Long Madd</th>
-                                                    <td><input type="checkbox" id="maddP" name="maddP" value="madd-practice" formControlName="madd_practice"></td>
-                                                    <td><input type="checkbox" id="maddT" name="maddT" value="madd-test" formControlName="madd_test"></td>     
-                                                </tr>
-                                                <tr>
-                                                    <th class="tcol">Qalqalah</th>
-                                                    <td><input type="checkbox" id="qalqalahP" name="qalqalahP" value="qalqalah-practice" formControlName="qalqalah_practice"></td>
-                                                    <td><input type="checkbox" id="qalqalahT" name="qalqalahT" value="qalqalah-test" formControlName="qalqalah_test"></td>     
-                                                </tr>                                                
-                                            </table>
-
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            </form>                          
+                                                <table>            
+                                                    <tr *ngFor="let r of ruleList">
+                                                        <th class="tcol">{{r.name}}</th>
+                                                        <td><input type="checkbox" id="{{r.code}}P" name="{{r.code}}P" value="{{r.code}}-practice" formControlName="{{r.code}}-practice"></td>
+                                                        <td><input type="checkbox" id="{{r.code}}T" name="{{r.code}}T" value="{{r.code}}-test" formControlName="{{r.code}}-test"></td>     
+                                                    </tr>
+                                                    <!-- <tr>
+                                                        <th class="tcol">Idghaam w/ Ghunnah</th>
+                                                        <td><input type="checkbox" id="idghaamGhunnahP" name="idghaamGhunnahP" value="idghaamGhunnah-practice" formControlName="idghaamGhunnah_practice"></td>
+                                                        <td><input type="checkbox" id="idghaamGhunnahT" name="idghaamGhunnahT" value="idghaamGhunnah-test" formControlName="idghaamGhunnah_test"></td>     
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="tcol">Idghaam w/ No Ghunnah</th>
+                                                        <td><input type="checkbox" id="idghaamNoGhunnahP" name="idghaamNoGhunnahP" value="idghaamNoGhunnah-practice" formControlName="idghaamNoGhunnah_practice"></td>
+                                                        <td><input type="checkbox" id="idghaamNoGhunnahT" name="idghaamNoGhunnahT" value="idghaamNoGhunnah-test" formControlName="idghaamNoGhunnah_test"></td>     
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="tcol">Ikhfa</th>
+                                                        <td><input type="checkbox" id="ikhfaP" name="ikhfaP" value="ikhfa-practice" formControlName="ikhfa_practice"></td>
+                                                        <td><input type="checkbox" id="ikhfaT" name="ikhfaT" value="ikhfa-test" formControlName="ikhfa_test"></td>     
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="tcol">Iqlab</th>
+                                                        <td><input type="checkbox" id="iqlabP" name="iqlabP" value="iqlab-practice" formControlName="iqlab_practice"></td>
+                                                        <td><input type="checkbox" id="iqlabT" name="iqlabT" value="iqlab-test" formControlName="iqlab_test"></td>     
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="tcol">Madd - 2, 4 or 6</th>
+                                                        <td><input type="checkbox" id="madd246P" name="madd246P" value="madd246-practice" formControlName="madd246_practice"></td>
+                                                        <td><input type="checkbox" id="madd246T" name="madd246T" value="madd246-test" formControlName="madd246_test"></td>     
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="tcol">Long Madd</th>
+                                                        <td><input type="checkbox" id="maddP" name="maddP" value="madd-practice" formControlName="madd_practice"></td>
+                                                        <td><input type="checkbox" id="maddT" name="maddT" value="madd-test" formControlName="madd_test"></td>     
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="tcol">Qalqalah</th>
+                                                        <td><input type="checkbox" id="qalqalahP" name="qalqalahP" value="qalqalah-practice" formControlName="qalqalah_practice"></td>
+                                                        <td><input type="checkbox" id="qalqalahT" name="qalqalahT" value="qalqalah-test" formControlName="qalqalah_test"></td>     
+                                                    </tr>                                                 -->
+                                                </table>
+    
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                </form>                           
                         </div>
                     </div>
                 </div>

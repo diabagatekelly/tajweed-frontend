@@ -8,6 +8,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { StudentsService } from 'src/app/services/students.service';
 import { StatsService } from 'src/app/services/stats.service';
+import {RULELIST} from '../../../../shared/ruleList';
+
 
 @Component({
   selector: 'app-student-account',
@@ -25,25 +27,7 @@ export class StudentAccountComponent implements OnInit {
   user;
   stats = [];
 
-  ruleList = [
-    {code: "ghunnah",
-    name: "Ghunnah"}, 
-    {code: "hamzatWasl",
-    name: "Hamzat-ul-Wasl"}, 
-    {code: "idghaamGhunnah",
-    name: "Idghaam w/ Ghunnah"}, 
-    {code: "idghaamNoGhunnah",
-    name: "Idghaam w/ no Ghunnah"}, 
-    {code: "ikhfa",
-    name: "Ikhfa"}, 
-    {code: "iqlab",
-    name: "Iqlab"}, 
-    {code: "madd",
-    name: "Long Madd"}, 
-    {code: "madd246",
-    name: "Madd optional 2, 4 or 6"}, 
-    {code: "qalqalah",
-    name: "Qalqalah"}].sort((a, b) => (a.code > b.code) ? 1 : -1)
+  ruleList = []
 
     newD3;  
 
@@ -52,6 +36,10 @@ export class StudentAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.ruleList = RULELIST.sort((a, b) => (a.code > b.code) ? 1 : -1)
+    console.log(this.ruleList)
+    console.log(RULELIST)
+
     let teacher = this.router.url.split('/')[2]
     let student = this.router.url.split('/')[3]
 
@@ -82,24 +70,31 @@ export class StudentAccountComponent implements OnInit {
     })
 
 
-    this.resetForm = new FormGroup({
-      ghunnah_practice: new FormControl(false),
-      ghunnah_test: new FormControl(false),
-      idghaamGhunnah_practice: new FormControl(false),
-      idghaamGhunnah_test: new FormControl(false),
-      idghaamNoGhunnah_practice: new FormControl(false),
-      idghaamNoGhunnah_test: new FormControl(false),
-      ikhfa_practice: new FormControl(false),
-      ikhfa_test: new FormControl(false),
-      iqlab_practice: new FormControl(false),
-      iqlab_test: new FormControl(false),
-      madd246_practice: new FormControl(false),
-      madd246_test: new FormControl(false),
-      madd_practice: new FormControl(false),
-      madd_test: new FormControl(false),
-      qalqalah_practice: new FormControl(false),
-      qalqalah_test: new FormControl(false)
+    let resetData = {}
+    RULELIST.forEach((r) => {
+      resetData[`${r.code}-practice`] = new FormControl(false)
+      resetData[`${r.code}-test`] = new FormControl(false)
     })
+
+    this.resetForm = new FormGroup(resetData)
+    // this.resetForm = new FormGroup({
+    //   ghunnah_practice: new FormControl(false),
+    //   ghunnah_test: new FormControl(false),
+    //   idghaamGhunnah_practice: new FormControl(false),
+    //   idghaamGhunnah_test: new FormControl(false),
+    //   idghaamNoGhunnah_practice: new FormControl(false),
+    //   idghaamNoGhunnah_test: new FormControl(false),
+    //   ikhfa_practice: new FormControl(false),
+    //   ikhfa_test: new FormControl(false),
+    //   iqlab_practice: new FormControl(false),
+    //   iqlab_test: new FormControl(false),
+    //   madd246_practice: new FormControl(false),
+    //   madd246_test: new FormControl(false),
+    //   madd_practice: new FormControl(false),
+    //   madd_test: new FormControl(false),
+    //   qalqalah_practice: new FormControl(false),
+    //   qalqalah_test: new FormControl(false)
+    // })
 
     console.log(this.resetForm)
 
@@ -187,46 +182,63 @@ export class StudentAccountComponent implements OnInit {
     }
   }
 
-  togglePracticeCheck(e) {
-    this.resetForm.setValue({
-      ghunnah_practice: e.target.checked ? true : false,
-      idghaamGhunnah_practice: e.target.checked ? true : false,
-      idghaamNoGhunnah_practice: e.target.checked ? true : false,
-      ikhfa_practice: e.target.checked ? true : false,
-      iqlab_practice: e.target.checked ? true : false,
-      madd246_practice: e.target.checked ? true : false,
-      madd_practice: e.target.checked ? true : false,
-      qalqalah_practice: e.target.checked ? true : false,
-      ghunnah_test: this.resetForm.controls['ghunnah_test'].value,
-      idghaamGhunnah_test: this.resetForm.controls['idghaamGhunnah_test'].value,
-      idghaamNoGhunnah_test: this.resetForm.controls['idghaamNoGhunnah_test'].value,
-      ikhfa_test: this.resetForm.controls['ikhfa_test'].value,
-      iqlab_test: this.resetForm.controls['iqlab_test'].value,
-      madd246_test: this.resetForm.controls['madd246_test'].value,
-      madd_test: this.resetForm.controls['madd_test'].value,
-      qalqalah_test: this.resetForm.controls['qalqalah_test'].value
-    })      
-}
+ togglePracticeCheck(e) {
+    
+    let setData = {}
+    RULELIST.forEach((r) => {
+      setData[`${r.code}-practice`] = e.target.checked ? true : false
+      setData[`${r.code}-test`] =  this.resetForm.controls[`${r.code}-test`].value
+    })
 
-toggleTestCheck(e) {
-this.resetForm.setValue({
-  ghunnah_practice: this.resetForm.controls['ghunnah_practice'].value,
-  idghaamGhunnah_practice: this.resetForm.controls['idghaamGhunnah_practice'].value,
-  idghaamNoGhunnah_practice: this.resetForm.controls['idghaamNoGhunnah_practice'].value,
-  ikhfa_practice: this.resetForm.controls['ikhfa_practice'].value,
-  iqlab_practice: this.resetForm.controls['iqlab_practice'].value,
-  madd246_practice: this.resetForm.controls['madd246_practice'].value,
-  madd_practice: this.resetForm.controls['madd_practice'].value,
-  qalqalah_practice: this.resetForm.controls['qalqalah_practice'].value,
-  ghunnah_test: e.target.checked ? true : false,
-  idghaamGhunnah_test: e.target.checked ? true : false,
-  idghaamNoGhunnah_test: e.target.checked ? true : false,
-  ikhfa_test: e.target.checked ? true : false,
-  iqlab_test: e.target.checked ? true : false,
-  madd246_test: e.target.checked ? true : false,
-  madd_test: e.target.checked ? true : false,
-  qalqalah_test: e.target.checked ? true : false
-})      
+    this.resetForm.setValue(setData)
+
+        // this.resetForm.setValue({
+        //   ghunnah_practice: e.target.checked ? true : false,
+        //   idghaamGhunnah_practice: e.target.checked ? true : false,
+        //   idghaamNoGhunnah_practice: e.target.checked ? true : false,
+        //   ikhfa_practice: e.target.checked ? true : false,
+        //   iqlab_practice: e.target.checked ? true : false,
+        //   madd246_practice: e.target.checked ? true : false,
+        //   madd_practice: e.target.checked ? true : false,
+        //   qalqalah_practice: e.target.checked ? true : false,
+        //   ghunnah_test: this.resetForm.controls['ghunnah_test'].value,
+        //   idghaamGhunnah_test: this.resetForm.controls['idghaamGhunnah_test'].value,
+        //   idghaamNoGhunnah_test: this.resetForm.controls['idghaamNoGhunnah_test'].value,
+        //   ikhfa_test: this.resetForm.controls['ikhfa_test'].value,
+        //   iqlab_test: this.resetForm.controls['iqlab_test'].value,
+        //   madd246_test: this.resetForm.controls['madd246_test'].value,
+        //   madd_test: this.resetForm.controls['madd_test'].value,
+        //   qalqalah_test: this.resetForm.controls['qalqalah_test'].value
+        // })      
+  }
+
+  toggleTestCheck(e) {
+    let setData = {}
+    RULELIST.forEach((r) => {
+      setData[`${r.code}-practice`] =  this.resetForm.controls[`${r.code}-practice`].value
+      setData[`${r.code}-test`] = e.target.checked ? true : false
+    })
+
+    this.resetForm.setValue(setData)
+    // this.resetForm.setValue({
+    //   ghunnah_practice: this.resetForm.controls['ghunnah_practice'].value,
+    //   idghaamGhunnah_practice: this.resetForm.controls['idghaamGhunnah_practice'].value,
+    //   idghaamNoGhunnah_practice: this.resetForm.controls['idghaamNoGhunnah_practice'].value,
+    //   ikhfa_practice: this.resetForm.controls['ikhfa_practice'].value,
+    //   iqlab_practice: this.resetForm.controls['iqlab_practice'].value,
+    //   madd246_practice: this.resetForm.controls['madd246_practice'].value,
+    //   madd_practice: this.resetForm.controls['madd_practice'].value,
+    //   qalqalah_practice: this.resetForm.controls['qalqalah_practice'].value,
+    //   ghunnah_test: e.target.checked ? true : false,
+    //   idghaamGhunnah_test: e.target.checked ? true : false,
+    //   idghaamNoGhunnah_test: e.target.checked ? true : false,
+    //   ikhfa_test: e.target.checked ? true : false,
+    //   iqlab_test: e.target.checked ? true : false,
+    //   madd246_test: e.target.checked ? true : false,
+    //   madd_test: e.target.checked ? true : false,
+    //   qalqalah_test: e.target.checked ? true : false
+    // })      
+
 }
 
 }

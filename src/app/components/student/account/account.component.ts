@@ -8,7 +8,9 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { StudentsService } from 'src/app/services/students.service';
 import { StatsService } from 'src/app/services/stats.service';
-
+import { TajweedService } from 'src/app/services/tajweed.service';
+import { RuleService } from 'src/app/services/rules.service';
+import {RULELIST} from '../../../shared/ruleList';
 
 
 @Component({
@@ -26,40 +28,26 @@ export class AccountComponent implements OnInit {
   deleteForm: FormGroup;
   allForm: FormGroup;
   studentForm: FormGroup;
+  ruleForm: FormGroup;
 
   userUpdated = false;
   passwordUpdated = false;
   studentAdded = false;
+  ruleAddSuccess = false;
+  ruleEditSuccess = false;
   error = false;
   openPopup = false;
+  editMode = false;
 
   user;
   student_list = [];
   stats = [];
 
-  ruleList = [
-    {code: "ghunnah",
-    name: "Ghunnah"}, 
-    {code: "hamzatWasl",
-    name: "Hamzat-ul-Wasl"}, 
-    {code: "idghaamGhunnah",
-    name: "Idghaam w/ Ghunnah"}, 
-    {code: "idghaamNoGhunnah",
-    name: "Idghaam w/ no Ghunnah"}, 
-    {code: "ikhfa",
-    name: "Ikhfa"}, 
-    {code: "iqlab",
-    name: "Iqlab"}, 
-    {code: "madd",
-    name: "Long Madd"}, 
-    {code: "madd246",
-    name: "Madd optional 2, 4 or 6"}, 
-    {code: "qalqalah",
-    name: "Qalqalah"}].sort((a, b) => (a.code > b.code) ? 1 : -1)
+  ruleList = [];
 
-    newD3;  
+  newD3;  
 
-  constructor(private statService: StatsService, private studentService: StudentsService, private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2, private modalService: BsModalService, private router: Router) {
+  constructor(private rule: RuleService, private statService: StatsService, private studentService: StudentsService, private authService: AuthService, private datePipe: DatePipe, private d3: D3Service, private renderer2: Renderer2, private modalService: BsModalService, private router: Router, private rules: TajweedService) {
    
 
     this.authService.authStatus().subscribe(u => {
@@ -114,7 +102,6 @@ export class AccountComponent implements OnInit {
         }
         i['sorted_practice'] = sorted  
       })
-      console.log(this.stats)
     })
    }
 
@@ -135,6 +122,10 @@ export class AccountComponent implements OnInit {
    }
 
   ngOnInit(): void {  
+    this.ruleList = RULELIST.sort((a, b) => (a.code > b.code) ? 1 : -1)
+    console.log(this.ruleList)
+    console.log(RULELIST)
+    
     this.editForm = new FormGroup({
       first_name: new FormControl('', [Validators.required]),
       last_name: new FormControl('', [Validators.required]),
@@ -159,30 +150,24 @@ export class AccountComponent implements OnInit {
       password: new FormControl('', [Validators.required])
     })
 
-    // this.allForm = new FormGroup({
-    //   all_practice: new FormControl(false),
-    //   all_test: new FormControl(false)
-    // })
-
-    this.resetForm = new FormGroup({
-      ghunnah_practice: new FormControl(false),
-      ghunnah_test: new FormControl(false),
-      idghaamGhunnah_practice: new FormControl(false),
-      idghaamGhunnah_test: new FormControl(false),
-      idghaamNoGhunnah_practice: new FormControl(false),
-      idghaamNoGhunnah_test: new FormControl(false),
-      ikhfa_practice: new FormControl(false),
-      ikhfa_test: new FormControl(false),
-      iqlab_practice: new FormControl(false),
-      iqlab_test: new FormControl(false),
-      madd246_practice: new FormControl(false),
-      madd246_test: new FormControl(false),
-      madd_practice: new FormControl(false),
-      madd_test: new FormControl(false),
-      qalqalah_practice: new FormControl(false),
-      qalqalah_test: new FormControl(false)
+    this.ruleForm = new FormGroup({
+      rule_code: new FormControl('', [Validators.required]),
+      rule_name: new FormControl(''),
+      rule_summary: new FormControl(''),
+      rule_details: new FormControl(''),
+      rule_example: new FormControl(''),
+      rule_audio: new FormControl(''),
+      rule_with_exercise: new FormControl(false)
     })
 
+    let resetData = {}
+    RULELIST.forEach((r) => {
+      resetData[`${r.code}-practice`] = new FormControl(false)
+      resetData[`${r.code}-test`] = new FormControl(false)
+    })
+
+    this.resetForm = new FormGroup(resetData)
+   
     console.log(this.resetForm)
 
   }
@@ -306,46 +291,147 @@ export class AccountComponent implements OnInit {
   }
 
   togglePracticeCheck(e) {
-        this.resetForm.setValue({
-          ghunnah_practice: e.target.checked ? true : false,
-          idghaamGhunnah_practice: e.target.checked ? true : false,
-          idghaamNoGhunnah_practice: e.target.checked ? true : false,
-          ikhfa_practice: e.target.checked ? true : false,
-          iqlab_practice: e.target.checked ? true : false,
-          madd246_practice: e.target.checked ? true : false,
-          madd_practice: e.target.checked ? true : false,
-          qalqalah_practice: e.target.checked ? true : false,
-          ghunnah_test: this.resetForm.controls['ghunnah_test'].value,
-          idghaamGhunnah_test: this.resetForm.controls['idghaamGhunnah_test'].value,
-          idghaamNoGhunnah_test: this.resetForm.controls['idghaamNoGhunnah_test'].value,
-          ikhfa_test: this.resetForm.controls['ikhfa_test'].value,
-          iqlab_test: this.resetForm.controls['iqlab_test'].value,
-          madd246_test: this.resetForm.controls['madd246_test'].value,
-          madd_test: this.resetForm.controls['madd_test'].value,
-          qalqalah_test: this.resetForm.controls['qalqalah_test'].value
-        })      
+    
+    let setData = {}
+    RULELIST.forEach((r) => {
+      setData[`${r.code}-practice`] = e.target.checked ? true : false
+      setData[`${r.code}-test`] =  this.resetForm.controls[`${r.code}-test`].value
+    })
+
+    this.resetForm.setValue(setData)  
   }
 
   toggleTestCheck(e) {
-    this.resetForm.setValue({
-      ghunnah_practice: this.resetForm.controls['ghunnah_practice'].value,
-      idghaamGhunnah_practice: this.resetForm.controls['idghaamGhunnah_practice'].value,
-      idghaamNoGhunnah_practice: this.resetForm.controls['idghaamNoGhunnah_practice'].value,
-      ikhfa_practice: this.resetForm.controls['ikhfa_practice'].value,
-      iqlab_practice: this.resetForm.controls['iqlab_practice'].value,
-      madd246_practice: this.resetForm.controls['madd246_practice'].value,
-      madd_practice: this.resetForm.controls['madd_practice'].value,
-      qalqalah_practice: this.resetForm.controls['qalqalah_practice'].value,
-      ghunnah_test: e.target.checked ? true : false,
-      idghaamGhunnah_test: e.target.checked ? true : false,
-      idghaamNoGhunnah_test: e.target.checked ? true : false,
-      ikhfa_test: e.target.checked ? true : false,
-      iqlab_test: e.target.checked ? true : false,
-      madd246_test: e.target.checked ? true : false,
-      madd_test: e.target.checked ? true : false,
-      qalqalah_test: e.target.checked ? true : false
-    })      
+    let setData = {}
+    RULELIST.forEach((r) => {
+      setData[`${r.code}-practice`] =  this.resetForm.controls[`${r.code}-practice`].value
+      setData[`${r.code}-test`] = e.target.checked ? true : false
+    })
+
+    this.resetForm.setValue(setData)
+   
 }
   
+ruleHandling(mode) {
 
+  if (mode !== 'add') {
+    this.editMode = true;
+    this.rules.fetchOneRule(this.user.username, mode).subscribe(res => {
+ 
+      this.ruleForm.setValue({
+        rule_code: res['rule'].code,
+        rule_name: res['rule'].name,
+        rule_summary: res['rule'].summary,
+        rule_details: res['rule'].details,
+        rule_example: res['rule'].example,
+        rule_audio: res['rule'].audio,
+        rule_with_exercise: res['rule'].with_exercise
+      })
+    })
+    
+  } else if (mode === 'add') {
+    this.editMode = false;
+
+    this.ruleForm.setValue({
+      rule_code: '',
+      rule_name: '',
+      rule_summary: '',
+      rule_details: '',
+      rule_example: '',
+      rule_audio: '',
+      rule_with_exercise: false
+    })
+  }
+}
+
+processRule() {
+  let mode;
+  if (this.editMode == false) {
+    mode = 'add'
+  } else {
+    mode = 'edit'
+  }
+  console.log(this.ruleForm.value)
+  this.rules.addEditRule(this.user.username, this.ruleForm.value, mode).subscribe(res => {
+    if (res['result'] === 'success') {
+      this.stats = res['tajweed'].sort((a, b) => (a.code > b.code) ? 1 : -1)
+      this.stats.forEach(i => {
+        let sorted = {};
+        if (i.practice.length !== 0) {
+          i.practice.forEach((session) => {
+            let newDate = this.datePipe.transform(session.practice_date, 'fullDate', '+0000')
+            if (sorted[newDate]) {
+              sorted[newDate]["count"]++;
+              sorted[newDate]["ayah_count"] += session.ayah_count
+
+            } else {
+              sorted[newDate] = {}
+              sorted[newDate]["count"] = 1
+              sorted[newDate]["ayah_count"] = session.ayah_count
+            }
+          })
+        }
+        i['sorted_practice'] = sorted  
+      })
+
+      this.rule.reset()
+
+      let resetData = {}
+
+      this.rules.fetchRules().subscribe(res => {
+        let l = res['rules'].length
+        res['rules'].forEach((r) => {
+          this.rule.addRule(r, l)
+          resetData[`${r.code}-practice`] = new FormControl(false)
+          resetData[`${r.code}-test`] = new FormControl(false)
+        })
+      })
+
+    this.resetForm = new FormGroup(resetData)
+  
+    }
+
+  })
+}
+
+deleteRule(code) {
+  this.rules.deleteRule(this.user.username, code).subscribe(res => {
+    if (res['result'] === 'deleted') {
+      this.stats = res['tajweed'].sort((a, b) => (a.code > b.code) ? 1 : -1)
+      this.stats.forEach(i => {
+        let sorted = {};
+        if (i.practice.length !== 0) {
+          i.practice.forEach((session) => {
+            let newDate = this.datePipe.transform(session.practice_date, 'fullDate', '+0000')
+            if (sorted[newDate]) {
+              sorted[newDate]["count"]++;
+              sorted[newDate]["ayah_count"] += session.ayah_count
+
+            } else {
+              sorted[newDate] = {}
+              sorted[newDate]["count"] = 1
+              sorted[newDate]["ayah_count"] = session.ayah_count
+            }
+          })
+        }
+        i['sorted_practice'] = sorted  
+      })
+      console.log(this.stats)
+      this.rule.reset()
+
+      let resetData = {}
+
+      this.rules.fetchRules().subscribe(res => {
+        let l = res['rules'].length
+        res['rules'].forEach((r) => {
+          this.rule.addRule(r, l)
+          resetData[`${r.code}-practice`] = new FormControl(false)
+          resetData[`${r.code}-test`] = new FormControl(false)
+        })
+      })
+
+      this.resetForm = new FormGroup(resetData)
+    }
+  })
+}
 }
