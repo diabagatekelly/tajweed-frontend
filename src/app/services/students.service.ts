@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentsService {
-  addStudentUrl = 'http://localhost:4200/api/add_student';
-  removeStudentUrl = 'http://localhost:4200/api/remove_student';
-  fetchStudentUrl = 'http://localhost:4200/api/fetch_student';
+  addStudentUrl = `${environment.backend}/api/add_student`;
+  removeStudentUrl = `${environment.backend}/api/remove_student`;
+  fetchStudentUrl = `${environment.backend}/api/fetch_student`;
 
 
   constructor(private http: HttpClient) {}

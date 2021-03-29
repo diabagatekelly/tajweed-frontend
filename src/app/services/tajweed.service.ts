@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TajweedService {
-  ayahUrl = 'http://localhost:4200/api/generate_ayat';
-  explUrl = 'http://localhost:4200/api/get_explanation';
-  fetchRulesUrl = 'http://localhost:4200/api/fetch_rules';
-  fetchOneRuleUrl = 'http://localhost:4200/api/fetch_single_rule';
-  addEditRuleUrl = 'http://localhost:4200/api/add_edit_rule';
-  deleteRuleUrl = 'http://localhost:4200/api/delete_rule';
+  ayahUrl = `${environment.backend}/api/generate_ayat`;
+  explUrl = `${environment.backend}/api/get_explanation`;
+  fetchRulesUrl = `${environment.backend}/api/fetch_rules`;
+  fetchOneRuleUrl = `${environment.backend}/api/fetch_single_rule`;
+  addEditRuleUrl = `${environment.backend}/api/add_edit_rule`;
+  deleteRuleUrl = `${environment.backend}/api/delete_rule`;
 
   constructor(private http: HttpClient) { }
 
   getAyah(rule, range, activity) {
     console.log(range)
-    return this.http.post(this.ayahUrl, {ruleChosen: rule, range: range, activity: activity})
+    return this.http.post(this.ayahUrl, JSON.stringify({ruleChosen: rule, range: range, activity: activity}))
   }
 
   getExpl(rule) {

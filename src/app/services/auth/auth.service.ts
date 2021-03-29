@@ -1,24 +1,34 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  
 
-  authUrl = 'http://localhost:4200/api/auth';
-  verifyAuthUrl = 'http://localhost:4200/api/verify_auth';
-  updateUserUrl = 'http://localhost:4200/api/update_user';
-  resetPasswordUrl = 'http://localhost:4200/api/reset_password';
-  deleteUserUrl = 'http://localhost:4200/api/delete_user';
-  logoutUrl = 'http://localhost:4200/api/logout';
+  authUrl = `${environment.backend}/api/auth`;
+  verifyAuthUrl = `${environment.backend}/api/verify_auth`;
+  updateUserUrl = `${environment.backend}/api/update_user`;
+  resetPasswordUrl = `${environment.backend}/api/reset_password`;
+  deleteUserUrl = `${environment.backend}/api/delete_user`;
+  logoutUrl = `${environment.backend}/api/logout`;
   
   constructor(private http: HttpClient) {}
 
+  headers = new HttpHeaders({
+    'Content-Type': 'text/plain'
+  })
+
   auth(data, mode) {
-    console.log(data, mode)
-    return this.http.post(this.authUrl, {data: data, mode : mode})
+    let strData = JSON.stringify(data)
+    let strMode = JSON.stringify(mode)
+    let dataObj = {data: strData, mode: strMode}
+    let complete = JSON.stringify(dataObj)
+    console.log(complete)
+    return this.http.post(this.authUrl, complete, {headers: this.headers})
   }
 
 

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatsService {
-  practiceUrl = 'http://localhost:4200/api/update_practice';
-  testUrl = 'http://localhost:4200/api/update_test';
-  resetPracticeUrl = 'http://localhost:4200/api/reset_practice';
-  resetTestUrl = 'http://localhost:4200/api/reset_test';
+  practiceUrl = `${environment.backend}/api/update_practice`;
+  testUrl = `${environment.backend}/api/update_test`;
+  resetPracticeUrl = `${environment.backend}/api/reset_practice`;
+  resetTestUrl = `${environment.backend}/api/reset_test`;
 
   constructor(private http: HttpClient) {}
 
